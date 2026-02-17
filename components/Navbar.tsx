@@ -1,0 +1,33 @@
+
+import React from 'react';
+
+const Navbar: React.FC = () => {
+  return (
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-[#4a5d4e]/90 backdrop-blur-md text-[#f5f2ed] px-6 py-4 border-b border-[#f5f2ed]/10">
+      <div className="max-w-7xl mx-auto flex items-center justify-between">
+        <div className="hidden md:flex gap-8 text-sm font-medium">
+          <a href="#" className="hover:opacity-70 transition-opacity">Shop</a>
+          <a href="#" className="hover:opacity-70 transition-opacity">Our Story</a>
+          <a href="#" className="hover:opacity-70 transition-opacity">Our Promise</a>
+        </div>
+        
+        <div className="text-3xl font-serif italic tracking-tight flex items-center gap-2">
+          <span>Squirrel Made</span>
+        </div>
+
+        <div className="flex items-center gap-8 text-sm font-medium">
+          <a href="#" className="hidden md:block hover:opacity-70 transition-opacity">Gifting</a>
+          <a href="#" className="hover:opacity-70 transition-opacity">Contact</a>
+          <div className="flex items-center gap-1 cursor-pointer hover:opacity-70 transition-opacity">
+            <span>Your Pantry</span>
+            <div className="w-8 h-8 rounded-full border border-[#f5f2ed]/30 flex items-center justify-center">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+  );
+};
+
+export default Navbar;
