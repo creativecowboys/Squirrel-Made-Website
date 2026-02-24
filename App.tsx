@@ -15,7 +15,7 @@ const App: React.FC = () => {
       <main className="flex-grow">
         <Hero />
         <Ticker />
-        <ProductGrid />
+        <div id="products"><ProductGrid /></div>
         <BrandStatement />
         <TrustBar />
         <Ticker />

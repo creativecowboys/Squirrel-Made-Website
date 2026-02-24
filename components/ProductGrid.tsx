@@ -5,34 +5,34 @@ import { Product } from '../types';
 const PRODUCTS: Product[] = [
   {
     id: '1',
-    name: 'Basil Infused EVOO',
+    name: 'Black Truffle Infused EVOO',
     category: 'Extra Virgin Olive Oil',
-    image: 'https://picsum.photos/seed/p1/400/600',
+    image: '/black-truffle-evoo.png',
     rating: 5,
     reviews: '1.2k'
   },
   {
     id: '2',
-    name: 'Aged Balsamic',
+    name: 'Chocolate Infused Balsamic',
     category: 'Balsamic Vinegar',
-    image: 'https://picsum.photos/seed/p2/400/600',
+    image: '/chocolate-balsamic.png',
     rating: 5,
     reviews: '850',
     isSeasonal: true
   },
   {
     id: '3',
-    name: 'Citrus Herb Blend',
+    name: 'Four Chile Fiesta',
     category: 'Artisan Spice Blend',
-    image: 'https://picsum.photos/seed/p3/400/600',
-    rating: 4,
+    image: '/four-chile-fiesta.png',
+    rating: 5,
     reviews: '1.5k'
   },
   {
     id: '4',
-    name: 'Smoked Garlic Salt',
-    category: 'Finishing Salt',
-    image: 'https://picsum.photos/seed/p4/400/600',
+    name: 'White Balsamic Vinegar',
+    category: 'Balsamic Vinegar',
+    image: '/white-balsamic.png',
     rating: 5,
     reviews: '920'
   }
@@ -41,14 +41,10 @@ const PRODUCTS: Product[] = [
 const ProductCard: React.FC<{ product: Product }> = ({ product }) => (
   <div className="flex flex-col items-center group">
     <div className="relative mb-6 overflow-hidden product-oval w-full max-w-[280px] bg-[#e6dfd5]">
-      {product.isSeasonal && (
-        <div className="absolute top-10 right-0 z-10 -rotate-12 bg-[#b45309] text-[#f5f2ed] text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full shadow-lg">
-          Seasonal Batch
-        </div>
-      )}
-      <img 
-        src={product.image} 
-        alt={product.name} 
+
+      <img
+        src={product.image}
+        alt={product.name}
         className="w-full h-full object-cover mix-blend-multiply opacity-90 group-hover:scale-105 transition-transform duration-700"
       />
     </div>
@@ -78,7 +74,7 @@ const ProductGrid: React.FC = () => {
       <div className="max-w-7xl mx-auto space-y-20">
         <div className="text-center space-y-4">
           <h2 className="text-4xl md:text-6xl font-serif italic text-[#2c3a2e]">
-            Choose Products that<br/>suits for your pantry
+            Choose Products that<br />suits for your pantry
           </h2>
         </div>
 

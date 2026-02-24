@@ -10,9 +10,17 @@ const Navbar: React.FC = () => {
           <a href="#" className="hover:opacity-70 transition-opacity">Our Story</a>
           <a href="#" className="hover:opacity-70 transition-opacity">Our Promise</a>
         </div>
-        
-        <div className="text-3xl font-serif italic tracking-tight flex items-center gap-2">
-          <span>Squirrel Made</span>
+
+
+        <div className="flex flex-col items-center gap-1">
+          <img
+            src="/Squirell_Made_Logo_5.png"
+            alt="Squirrel Made Icon"
+            className="h-8 w-auto"
+          />
+          <div className="text-2xl font-serif italic tracking-tight">
+            <span>Squirrel Made</span>
+          </div>
         </div>
 
         <div className="flex items-center gap-8 text-sm font-medium">
@@ -21,7 +29,7 @@ const Navbar: React.FC = () => {
           <div className="flex items-center gap-1 cursor-pointer hover:opacity-70 transition-opacity">
             <span>Your Pantry</span>
             <div className="w-8 h-8 rounded-full border border-[#f5f2ed]/30 flex items-center justify-center">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" /><path d="M3 6h18" /><path d="M16 10a4 4 0 0 1-8 0" /></svg>
             </div>
           </div>
         </div>
