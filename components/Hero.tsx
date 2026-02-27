@@ -31,12 +31,16 @@ const Hero: React.FC = () => {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-6 items-start sm:items-center">
-            <button className="group flex items-center gap-4 text-xl font-serif italic hover:gap-6 transition-all underline underline-offset-8">
+            <a
+              href="#products"
+              onClick={(e) => { e.preventDefault(); document.getElementById('products')?.scrollIntoView({ behavior: 'smooth' }); }}
+              className="group flex items-center gap-4 text-xl font-serif italic hover:gap-6 transition-all underline underline-offset-8 cursor-pointer"
+            >
               Shop the Collection
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="group-hover:translate-x-1 transition-transform">
                 <path d="M5 12H19M19 12L13 6M19 12L13 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
-            </button>
+            </a>
 
             <div className="flex -space-x-3 items-center">
               {[1, 2].map((i) => (
