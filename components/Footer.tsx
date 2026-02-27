@@ -42,9 +42,20 @@ const Footer: React.FC = () => {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto mt-12 pt-12 border-t border-[#f5f2ed]/5 text-center">
+      <div className="max-w-7xl mx-auto mt-12 pt-12 border-t border-[#f5f2ed]/5 text-center space-y-3">
         <p className="font-serif italic text-2xl text-[#f5f2ed]/40">
           "Real ingredients. Honest food. Made with care."
+        </p>
+        <p className="text-[10px] uppercase tracking-widest text-[#f5f2ed]/30">
+          Powered by{' '}
+          <a
+            href="https://creativecowboys.co"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-[#f5f2ed]/60 transition-colors underline underline-offset-2"
+          >
+            Creative Cowboys
+          </a>
         </p>
       </div>
     </footer>
