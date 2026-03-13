@@ -1,34 +1,34 @@
 
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
+import { CartItem, addToCart } from '../src/cart';
 
 interface CatalogProduct {
   id: number;
   category: string;
   name: string;
-  price: string;
-  paymentLink: string;
+  price: number; // stored as number now (was string)
   image: string;
 }
 
 const CATALOG: CatalogProduct[] = [
-  { id: 1, category: 'Extra Virgin Olive Oils & Infusions', name: 'Extra Virgin Olive Oil Spanish', price: '$20.00', paymentLink: 'https://square.link/u/58SQdFmm', image: '/Product Images/banana-batch-c7bc77d3-beac-44d5-bf93-fad503224061.png' },
-  { id: 2, category: 'Extra Virgin Olive Oils & Infusions', name: 'Basil Infused Extra Virgin Olive Oil', price: '$21.00', paymentLink: 'https://square.link/u/oH89Jd9r', image: '/Product Images/banana-batch-1d1e8870-be1a-4c47-a641-dc4d5ab8fa9c.png' },
-  { id: 3, category: 'Extra Virgin Olive Oils & Infusions', name: 'Garlic Infused Extra Virgin Olive Oil', price: '$21.00', paymentLink: 'https://square.link/u/SYB8MgUv', image: '/Product Images/banana-batch-b136802e-75e9-49cc-b12b-7d87e1aa4b66.png' },
-  { id: 4, category: 'Extra Virgin Olive Oils & Infusions', name: 'Black Truffle Extra Virgin Olive Oil', price: '$26.00', paymentLink: 'https://square.link/u/KonO8BkN', image: '/Product Images/banana-batch-c0055bd5-940a-41c1-9d87-934f20374ad7.png' },
-  { id: 5, category: 'Extra Virgin Olive Oils & Infusions', name: 'Hatch Green Chili Extra Virgin Olive Oil', price: '$21.00', paymentLink: 'https://square.link/u/C05iL7NG', image: '/Product Images/banana-batch-4236deba-4640-47d0-b87a-1367cd2bff9f.png' },
-  { id: 6, category: 'Extra Virgin Olive Oils & Infusions', name: 'Meyer Lemon Extra Virgin Olive Oil', price: '$21.00', paymentLink: 'https://square.link/u/eDcH5Lph', image: '/Product Images/banana-batch-50f3fe7d-b4c9-4600-82cf-4779648bb356.png' },
-  { id: 7, category: 'Traditional Balsamic Vinegars & Infusions', name: '25 Star Traditional Balsamic Vinegar', price: '$20.00', paymentLink: 'https://square.link/u/WahzIS3I', image: '/Product Images/banana-batch-71089f9f-41c9-4d76-8b0c-41e91c1a90e9.png' },
-  { id: 8, category: 'Traditional Balsamic Vinegars & Infusions', name: 'Cranberry Infused 25 Star Traditional Balsamic Vinegar', price: '$21.00', paymentLink: 'https://square.link/u/vG6oTg0k', image: '/Product Images/banana-batch-16e351c3-8a1a-4d7a-9125-8044acfb6bbd.png' },
-  { id: 9, category: 'Traditional Balsamic Vinegars & Infusions', name: 'Chocolate Infused 25 Star Traditional Balsamic Vinegar', price: '$21.00', paymentLink: 'https://square.link/u/JXxQ8125', image: '/Product Images/banana-batch-fa0f28ed-793d-4d2d-8b2c-df5add805c23.png' },
-  { id: 10, category: 'Traditional Balsamic Vinegars & Infusions', name: 'Plum Infused 25 Star Traditional Balsamic Vinegar', price: '$21.00', paymentLink: 'https://square.link/u/l6bPxgPR', image: '/Product Images/banana-batch-ed223ec6-9cf8-4c80-b49f-5d1c1472d3da.png' },
-  { id: 11, category: 'Traditional Balsamic Vinegars & Infusions', name: 'Raspberry Infused 25 Star Traditional Balsamic Vinegar', price: '$21.00', paymentLink: 'https://square.link/u/VczOz2ek', image: '/Product Images/banana-batch-0c48bcdd-2d47-4e86-8ae3-4fa893908358.png' },
-  { id: 12, category: 'White Balsamic Vinegars & Infusions', name: '25 Star White Balsamic Vinegar', price: '$20.00', paymentLink: 'https://square.link/u/wBHWIKhk', image: '/Product Images/banana-batch-2318a688-c720-4611-a952-e11b0e95595b.png' },
-  { id: 13, category: 'White Balsamic Vinegars & Infusions', name: 'Blood Orange Infused 25 Star White Balsamic Vinegar', price: '$21.00', paymentLink: 'https://square.link/u/pfmcDwON', image: '/Product Images/banana-batch-9d43f6f6-6dfe-420c-87c9-7f0857184a71.png' },
-  { id: 14, category: 'White Balsamic Vinegars & Infusions', name: 'Chipotle Lime Infused 25 Star White Balsamic Vinegar', price: '$21.00', paymentLink: 'https://square.link/u/WrktnUb1', image: '/Product Images/banana-batch-8bf75ed6-cb01-4b95-a5b6-8d363efc84a8.png' },
-  { id: 15, category: 'White Balsamic Vinegars & Infusions', name: 'Meyer Lemon Infused 25 Star White Balsamic Vinegar', price: '$21.00', paymentLink: 'https://square.link/u/Gnz1a3n1', image: '/Product Images/banana-batch-2fe90beb-b8b5-43fa-b16e-2ad3f030a19f.png' },
-  { id: 16, category: 'Squirrelly Spice Blends', name: "Chef Squirrel's Blend", price: '$12.00', paymentLink: 'https://square.link/u/AFXOGZB7', image: '/Product Images/banana-batch-a3b69942-e753-4826-8fb9-53cf7775daeb.png' },
-  { id: 17, category: 'Squirrelly Spice Blends', name: 'Mediterranean Squirrel', price: '$12.00', paymentLink: 'https://square.link/u/Q3I26l3M', image: '/Product Images/banana-batch-b1b838cb-afe7-4a3c-9734-48904b5f2efe.png' },
-  { id: 18, category: 'Squirrelly Spice Blends', name: 'Squirrelly 4 Chile Fiesta', price: '$12.00', paymentLink: 'https://square.link/u/lKTv9Jdj', image: '/Product Images/banana-batch-4f4e19c9-79bb-429a-aa51-ef6283d7031c.png' },
+  { id: 1, category: 'Extra Virgin Olive Oils & Infusions', name: 'Extra Virgin Olive Oil Spanish', price: 20.00, image: '/Product Images/banana-batch-c7bc77d3-beac-44d5-bf93-fad503224061.png' },
+  { id: 2, category: 'Extra Virgin Olive Oils & Infusions', name: 'Basil Infused Extra Virgin Olive Oil', price: 21.00, image: '/Product Images/banana-batch-1d1e8870-be1a-4c47-a641-dc4d5ab8fa9c.png' },
+  { id: 3, category: 'Extra Virgin Olive Oils & Infusions', name: 'Garlic Infused Extra Virgin Olive Oil', price: 21.00, image: '/Product Images/banana-batch-b136802e-75e9-49cc-b12b-7d87e1aa4b66.png' },
+  { id: 4, category: 'Extra Virgin Olive Oils & Infusions', name: 'Black Truffle Extra Virgin Olive Oil', price: 26.00, image: '/Product Images/banana-batch-c0055bd5-940a-41c1-9d87-934f20374ad7.png' },
+  { id: 5, category: 'Extra Virgin Olive Oils & Infusions', name: 'Hatch Green Chili Extra Virgin Olive Oil', price: 21.00, image: '/Product Images/banana-batch-4236deba-4640-47d0-b87a-1367cd2bff9f.png' },
+  { id: 6, category: 'Extra Virgin Olive Oils & Infusions', name: 'Meyer Lemon Extra Virgin Olive Oil', price: 21.00, image: '/Product Images/banana-batch-50f3fe7d-b4c9-4600-82cf-4779648bb356.png' },
+  { id: 7, category: 'Traditional Balsamic Vinegars & Infusions', name: '25 Star Traditional Balsamic Vinegar', price: 20.00, image: '/Product Images/banana-batch-71089f9f-41c9-4d76-8b0c-41e91c1a90e9.png' },
+  { id: 8, category: 'Traditional Balsamic Vinegars & Infusions', name: 'Cranberry Infused 25 Star Traditional Balsamic Vinegar', price: 21.00, image: '/Product Images/banana-batch-16e351c3-8a1a-4d7a-9125-8044acfb6bbd.png' },
+  { id: 9, category: 'Traditional Balsamic Vinegars & Infusions', name: 'Chocolate Infused 25 Star Traditional Balsamic Vinegar', price: 21.00, image: '/Product Images/banana-batch-fa0f28ed-793d-4d2d-8b2c-df5add805c23.png' },
+  { id: 10, category: 'Traditional Balsamic Vinegars & Infusions', name: 'Plum Infused 25 Star Traditional Balsamic Vinegar', price: 21.00, image: '/Product Images/banana-batch-ed223ec6-9cf8-4c80-b49f-5d1c1472d3da.png' },
+  { id: 11, category: 'Traditional Balsamic Vinegars & Infusions', name: 'Raspberry Infused 25 Star Traditional Balsamic Vinegar', price: 21.00, image: '/Product Images/banana-batch-0c48bcdd-2d47-4e86-8ae3-4fa893908358.png' },
+  { id: 12, category: 'White Balsamic Vinegars & Infusions', name: '25 Star White Balsamic Vinegar', price: 20.00, image: '/Product Images/banana-batch-2318a688-c720-4611-a952-e11b0e95595b.png' },
+  { id: 13, category: 'White Balsamic Vinegars & Infusions', name: 'Blood Orange Infused 25 Star White Balsamic Vinegar', price: 21.00, image: '/Product Images/banana-batch-9d43f6f6-6dfe-420c-87c9-7f0857184a71.png' },
+  { id: 14, category: 'White Balsamic Vinegars & Infusions', name: 'Chipotle Lime Infused 25 Star White Balsamic Vinegar', price: 21.00, image: '/Product Images/banana-batch-8bf75ed6-cb01-4b95-a5b6-8d363efc84a8.png' },
+  { id: 15, category: 'White Balsamic Vinegars & Infusions', name: 'Meyer Lemon Infused 25 Star White Balsamic Vinegar', price: 21.00, image: '/Product Images/banana-batch-2fe90beb-b8b5-43fa-b16e-2ad3f030a19f.png' },
+  { id: 16, category: 'Squirrelly Spice Blends', name: "Chef Squirrel's Blend", price: 12.00, image: '/Product Images/banana-batch-a3b69942-e753-4826-8fb9-53cf7775daeb.png' },
+  { id: 17, category: 'Squirrelly Spice Blends', name: 'Mediterranean Squirrel', price: 12.00, image: '/Product Images/banana-batch-b1b838cb-afe7-4a3c-9734-48904b5f2efe.png' },
+  { id: 18, category: 'Squirrelly Spice Blends', name: 'Squirrelly 4 Chile Fiesta', price: 12.00, image: '/Product Images/banana-batch-4f4e19c9-79bb-429a-aa51-ef6283d7031c.png' },
 ];
 
 const CATEGORIES = ['All', ...Array.from(new Set(CATALOG.map(p => p.category)))];
@@ -80,8 +80,20 @@ const CATEGORY_ICONS: Record<string, React.ReactNode> = {
   ),
 };
 
-const ProductCard: React.FC<{ product: CatalogProduct }> = ({ product }) => {
+interface ProductCardProps {
+  product: CatalogProduct;
+  onAddToCart: (item: Omit<CartItem, 'quantity'>) => void;
+}
+
+const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }) => {
+  const [added, setAdded] = useState(false);
   const colors = CATEGORY_COLORS[product.category] ?? { dot: 'bg-[#2c3a2e]', badge: 'bg-[#2c3a2e]/10 text-[#2c3a2e]', border: 'border-[#2c3a2e]/20' };
+
+  const handleAdd = useCallback(() => {
+    onAddToCart({ id: product.id, name: product.name, price: product.price, image: product.image });
+    setAdded(true);
+    setTimeout(() => setAdded(false), 1600);
+  }, [product, onAddToCart]);
 
   return (
     <div className={`group relative flex flex-col bg-white rounded-2xl border ${colors.border} overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300`}>
@@ -116,25 +128,44 @@ const ProductCard: React.FC<{ product: CatalogProduct }> = ({ product }) => {
 
         {/* Bottom row: price + button */}
         <div className="flex items-center justify-between gap-3 pt-2 border-t border-[#2c3a2e]/8">
-          <span className="text-2xl font-serif font-bold text-[#2c3a2e]">{product.price}</span>
-          <a
-            href={product.paymentLink}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-1.5 px-5 py-2 bg-[#2c3a2e] text-[#f5f2ed] rounded-full text-xs font-semibold uppercase tracking-wider hover:bg-[#4a5d4e] active:scale-95 transition-all duration-200"
+          <span className="text-2xl font-serif font-bold text-[#2c3a2e]">${product.price.toFixed(2)}</span>
+          <button
+            onClick={handleAdd}
+            aria-label={`Add ${product.name} to cart`}
+            className={`flex items-center gap-1.5 px-5 py-2 rounded-full text-xs font-semibold uppercase tracking-wider active:scale-95 transition-all duration-200 ${added
+                ? 'bg-[#8aad6e] text-white'
+                : 'bg-[#2c3a2e] text-[#f5f2ed] hover:bg-[#4a5d4e]'
+              }`}
           >
-            Buy Now
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-3 h-3">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
-            </svg>
-          </a>
+            {added ? (
+              <>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="w-3 h-3">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+                </svg>
+                Added!
+              </>
+            ) : (
+              <>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-3 h-3">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
+                </svg>
+                Add to Cart
+              </>
+            )}
+          </button>
         </div>
       </div>
     </div>
   );
 };
 
-const CategorySection: React.FC<{ category: string; products: CatalogProduct[] }> = ({ category, products }) => {
+interface CategorySectionProps {
+  category: string;
+  products: CatalogProduct[];
+  onAddToCart: (item: Omit<CartItem, 'quantity'>) => void;
+}
+
+const CategorySection: React.FC<CategorySectionProps> = ({ category, products, onAddToCart }) => {
   const colors = CATEGORY_COLORS[category] ?? { dot: 'bg-[#2c3a2e]', badge: '', border: '' };
 
   return (
@@ -146,13 +177,17 @@ const CategorySection: React.FC<{ category: string; products: CatalogProduct[] }
         <span className="text-sm text-[#2c3a2e]/40 font-medium">{products.length} products</span>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-        {products.map(p => <ProductCard key={p.id} product={p} />)}
+        {products.map(p => <ProductCard key={p.id} product={p} onAddToCart={onAddToCart} />)}
       </div>
     </div>
   );
 };
 
-const ProductGrid: React.FC = () => {
+interface ProductGridProps {
+  onAddToCart: (item: Omit<CartItem, 'quantity'>) => void;
+}
+
+const ProductGrid: React.FC<ProductGridProps> = ({ onAddToCart }) => {
   const [activeCategory, setActiveCategory] = useState('All');
 
   const filtered = activeCategory === 'All'
@@ -204,12 +239,13 @@ const ProductGrid: React.FC = () => {
                 key={cat}
                 category={cat}
                 products={filtered.filter(p => p.category === cat)}
+                onAddToCart={onAddToCart}
               />
             ))}
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            {filtered.map(p => <ProductCard key={p.id} product={p} />)}
+            {filtered.map(p => <ProductCard key={p.id} product={p} onAddToCart={onAddToCart} />)}
           </div>
         )}
 
