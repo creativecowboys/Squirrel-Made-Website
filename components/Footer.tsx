@@ -19,7 +19,7 @@ const Footer: React.FC = () => {
             Facebook
           </a>
           <a
-            href="https://www.instagram.com/squirrel.made"
+            href="https://www.instagram.com/squirrelmadeproducts"
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Instagram"
