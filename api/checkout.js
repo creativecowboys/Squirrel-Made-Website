@@ -20,19 +20,19 @@ export default async function handler(req, res) {
         }
     }
 
-    const accessToken = process.env.SQUARE_ACCESS_TOKEN;
-    const locationId = process.env.SQUARE_LOCATION_ID;
-    const isProduction = process.env.SQUARE_ENVIRONMENT === 'production';
+    const accessToken = (process.env.SQUARE_ACCESS_TOKEN || '').trim();
+    const locationId = (process.env.SQUARE_LOCATION_ID || '').trim();
+    const isProduction = (process.env.SQUARE_ENVIRONMENT || '').trim() === 'production';
     const squareBaseUrl = isProduction
         ? 'https://connect.squareup.com'
         : 'https://connect.squareupsandbox.com';
 
     // Debug: log first 10 chars of token and location ID presence
     console.log('[Checkout Debug] env check:', {
-        tokenPrefix: accessToken ? accessToken.trim().substring(0, 10) + '...' : 'MISSING',
-        tokenLength: accessToken ? accessToken.length : 0,
+        tokenPrefix: accessToken ? accessToken.substring(0, 10) + '...' : 'MISSING',
+        tokenLength: accessToken.length,
         locationId: locationId || 'MISSING',
-        environment: process.env.SQUARE_ENVIRONMENT || 'MISSING',
+        environment: (process.env.SQUARE_ENVIRONMENT || '').trim(),
         baseUrl: squareBaseUrl,
     });
 
