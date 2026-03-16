@@ -9,7 +9,7 @@ interface NavbarProps {
 
 const Navbar: React.FC<NavbarProps> = ({ cartCount, onCartOpen }) => {
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-[#4a5d4e]/90 backdrop-blur-md text-[#f5f2ed] px-6 py-4 border-b border-[#f5f2ed]/10">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-[#4a5d4e]/90 backdrop-blur-md text-[#f5f2ed] px-6 py-2 border-b border-[#f5f2ed]/10">
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         <div className="hidden md:flex gap-8 text-sm font-medium">
           <a href="/" className="hover:opacity-70 transition-opacity">Shop</a>
@@ -21,7 +21,7 @@ const Navbar: React.FC<NavbarProps> = ({ cartCount, onCartOpen }) => {
           <img
             src="/squirrel made white stacked.png"
             alt="Squirrel Made"
-            className="h-60 w-auto"
+            className="h-28 w-auto"
           />
         </div>
 
