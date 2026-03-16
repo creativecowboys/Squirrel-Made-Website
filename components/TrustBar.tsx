@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const TrustBar: React.FC = () => {
   return (
@@ -31,12 +32,12 @@ const TrustBar: React.FC = () => {
               ))}
             </ul>
 
-            <button className="group flex items-center gap-2 text-sm font-bold uppercase tracking-widest text-[#2c3a2e] pt-6">
+            <Link to="/our-promise" className="group flex items-center gap-2 text-sm font-bold uppercase tracking-widest text-[#2c3a2e] pt-6 hover:opacity-70 transition-opacity">
               Our Full Promise
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="group-hover:translate-x-1 transition-transform">
                 <path d="M5 12h14M12 5l7 7-7 7" />
               </svg>
-            </button>
+            </Link>
           </div>
 
           <div className="relative">
