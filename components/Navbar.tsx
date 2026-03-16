@@ -30,7 +30,7 @@ const Navbar: React.FC<NavbarProps> = ({ cartCount, onCartOpen }) => {
 
         <div className="flex items-center gap-8 text-sm font-medium">
           <a href="#" className="hidden md:block hover:opacity-70 transition-opacity">Gifting</a>
-          <a href="#" className="hover:opacity-70 transition-opacity">Contact</a>
+          <Link to="/contact" className="hover:opacity-70 transition-opacity">Contact</Link>
 
           {/* Cart button */}
           <button

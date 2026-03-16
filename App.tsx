@@ -10,6 +10,7 @@ import BrandStatement from './components/BrandStatement';
 import Footer from './components/Footer';
 import CartDrawer from './components/CartDrawer';
 import OurStory from './components/OurStory';
+import Contact from './components/Contact';
 import { CartItem, getCart, addToCart, getCartCount } from './src/cart';
 
 // Home page layout
@@ -67,6 +68,15 @@ const App: React.FC = () => {
           path="/our-story"
           element={
             <OurStory
+              cartCount={cartCount}
+              onCartOpen={() => setIsCartOpen(true)}
+            />
+          }
+        />
+        <Route
+          path="/contact"
+          element={
+            <Contact
               cartCount={cartCount}
               onCartOpen={() => setIsCartOpen(true)}
             />
