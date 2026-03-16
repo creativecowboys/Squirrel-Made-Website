@@ -1,11 +1,5 @@
-import { Client, Environment } from 'squareup';
-
-const client = new Client({
-    accessToken: process.env.SQUARE_ACCESS_TOKEN,
-    environment: process.env.SQUARE_ENVIRONMENT === 'production'
-        ? Environment.Production
-        : Environment.Sandbox,
-});
+// Uses native fetch (Node 18+) to call Square REST API directly.
+// Avoids squareup SDK BigInt serialization issues with Vercel's ESM/CJS handling.
 
 export default async function handler(req, res) {
     // Only allow POST
@@ -26,34 +20,66 @@ export default async function handler(req, res) {
         }
     }
 
+    const accessToken = process.env.SQUARE_ACCESS_TOKEN;
+    const locationId = process.env.SQUARE_LOCATION_ID;
+    const isProduction = process.env.SQUARE_ENVIRONMENT === 'production';
+    const squareBaseUrl = isProduction
+        ? 'https://connect.squareup.com'
+        : 'https://connect.squareupsandbox.com';
+
+    if (!accessToken || !locationId) {
+        console.error('[Checkout] Missing SQUARE_ACCESS_TOKEN or SQUARE_LOCATION_ID env vars');
+        return res.status(500).json({ error: 'Server configuration error.' });
+    }
+
     try {
-        // Map cart items to Square line items
+        // Map cart items — amounts in cents as plain integers (no BigInt)
         const lineItems = items.map((item) => ({
             name: item.name,
             quantity: String(item.quantity),
-            basePriceMoney: {
-                amount: BigInt(Math.round(item.price * 100)),
+            base_price_money: {
+                amount: Math.round(item.price * 100),
                 currency: 'USD',
             },
         }));
 
-        const { result } = await client.checkoutApi.createPaymentLink({
-            idempotencyKey: `${Date.now()}-${Math.random().toString(36).slice(2)}`,
+        const idempotencyKey = `${Date.now()}-${Math.random().toString(36).slice(2)}`;
+
+        const body = {
+            idempotency_key: idempotencyKey,
             order: {
-                locationId: process.env.SQUARE_LOCATION_ID,
-                lineItems,
+                location_id: locationId,
+                line_items: lineItems,
             },
-            checkoutOptions: {
-                redirectUrl: 'https://squirrelmadeproducts.com/?order=success',
-                merchantSupportEmail: 'hello@squirrelmadeproducts.com',
-                allowTipping: false,
-                askForShippingAddress: true,
+            checkout_options: {
+                redirect_url: 'https://squirrelmadeproducts.com/?order=success',
+                merchant_support_email: 'squirrelmadeproducts@gmail.com',
+                allow_tipping: false,
+                ask_for_shipping_address: true,
             },
+        };
+
+        const response = await fetch(`${squareBaseUrl}/v2/online-checkout/payment-links`, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${accessToken}`,
+                'Content-Type': 'application/json',
+                'Square-Version': '2024-01-18',
+            },
+            body: JSON.stringify(body),
         });
 
-        return res.status(200).json({ checkoutUrl: result.paymentLink.url });
+        const data = await response.json();
+
+        if (!response.ok) {
+            console.error('[Square API Error]', JSON.stringify(data.errors));
+            const msg = data.errors?.[0]?.detail || 'Square API error';
+            return res.status(502).json({ error: msg });
+        }
+
+        return res.status(200).json({ checkoutUrl: data.payment_link.url });
     } catch (err) {
-        console.error('[Square Checkout Error]', err);
+        console.error('[Checkout Error]', err);
         return res.status(500).json({ error: 'Failed to create checkout. Please try again.' });
     }
 }
