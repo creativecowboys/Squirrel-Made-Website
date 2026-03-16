@@ -27,6 +27,15 @@ export default async function handler(req, res) {
         ? 'https://connect.squareup.com'
         : 'https://connect.squareupsandbox.com';
 
+    // Debug: log first 10 chars of token and location ID presence
+    console.log('[Checkout Debug] env check:', {
+        tokenPrefix: accessToken ? accessToken.trim().substring(0, 10) + '...' : 'MISSING',
+        tokenLength: accessToken ? accessToken.length : 0,
+        locationId: locationId || 'MISSING',
+        environment: process.env.SQUARE_ENVIRONMENT || 'MISSING',
+        baseUrl: squareBaseUrl,
+    });
+
     if (!accessToken || !locationId) {
         console.error('[Checkout] Missing SQUARE_ACCESS_TOKEN or SQUARE_LOCATION_ID env vars');
         return res.status(500).json({ error: 'Server configuration error.' });
