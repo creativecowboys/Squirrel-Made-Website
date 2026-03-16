@@ -17,13 +17,13 @@ const Navbar: React.FC<NavbarProps> = ({ cartCount, onCartOpen }) => {
           <Link to="/our-promise" className="hover:opacity-70 transition-opacity">Our Promise</Link>
         </div>
 
-        <div className="flex items-center justify-center">
+        <Link to="/" className="flex items-center justify-center">
           <img
             src="/squirrel made white stacked.png"
             alt="Squirrel Made"
-            className="h-28 w-auto"
+            className="h-28 w-auto hover:opacity-80 transition-opacity"
           />
-        </div>
+        </Link>
 
         <div className="flex items-center gap-8 text-sm font-medium">
           <Link to="/contact" className="hover:opacity-70 transition-opacity">Contact</Link>
