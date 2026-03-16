@@ -21,7 +21,7 @@ const Navbar: React.FC<NavbarProps> = ({ cartCount, onCartOpen }) => {
           <img
             src="/squirrel made white stacked.png"
             alt="Squirrel Made"
-            className="h-14 w-auto"
+            className="h-20 w-auto"
           />
         </div>
 
