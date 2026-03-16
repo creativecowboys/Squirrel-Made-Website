@@ -11,6 +11,7 @@ import Footer from './components/Footer';
 import CartDrawer from './components/CartDrawer';
 import OurStory from './components/OurStory';
 import Contact from './components/Contact';
+import OurPromise from './components/OurPromise';
 import { CartItem, getCart, addToCart, getCartCount } from './src/cart';
 
 // Home page layout
@@ -77,6 +78,15 @@ const App: React.FC = () => {
           path="/contact"
           element={
             <Contact
+              cartCount={cartCount}
+              onCartOpen={() => setIsCartOpen(true)}
+            />
+          }
+        />
+        <Route
+          path="/our-promise"
+          element={
+            <OurPromise
               cartCount={cartCount}
               onCartOpen={() => setIsCartOpen(true)}
             />
