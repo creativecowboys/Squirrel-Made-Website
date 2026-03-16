@@ -17,15 +17,12 @@ const Navbar: React.FC<NavbarProps> = ({ cartCount, onCartOpen }) => {
           <Link to="/our-promise" className="hover:opacity-70 transition-opacity">Our Promise</Link>
         </div>
 
-        <div className="flex flex-col items-center gap-1">
+        <div className="flex items-center justify-center">
           <img
-            src="/Squirell_Made_Logo_5.png"
-            alt="Squirrel Made Icon"
-            className="h-8 w-auto"
+            src="/squirrel made white stacked.png"
+            alt="Squirrel Made"
+            className="h-14 w-auto"
           />
-          <div className="text-2xl font-serif italic tracking-tight">
-            <span>Squirrel Made</span>
-          </div>
         </div>
 
         <div className="flex items-center gap-8 text-sm font-medium">
