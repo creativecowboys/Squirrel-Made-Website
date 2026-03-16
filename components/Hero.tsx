@@ -73,7 +73,7 @@ const Hero: React.FC = () => {
             <div className="absolute -bottom-10 -left-10 w-48 h-48 rounded-full overflow-hidden border-4 border-[#4a5d4e]">
               <img src="/hero-balsamic.png" alt="Aged balsamic vinegar drizzled over fresh mozzarella and tomatoes" className="w-full h-full object-cover" />
             </div>
-            <div className="absolute top-10 -left-16 w-32 h-16 rounded-full overflow-hidden border-4 border-[#4a5d4e]">
+            <div className="absolute top-10 -left-16 w-32 h-32 rounded-full overflow-hidden border-4 border-[#4a5d4e]">
               <img src="/hero-basil.png" alt="Fresh basil leaves with water droplets" className="w-full h-full object-cover" />
             </div>
           </div>
