@@ -12,6 +12,7 @@ import CartDrawer from './components/CartDrawer';
 import OurStory from './components/OurStory';
 import Contact from './components/Contact';
 import OurPromise from './components/OurPromise';
+import ScrollToTop from './components/ScrollToTop';
 import { CartItem, getCart, addToCart, getCartCount } from './src/cart';
 
 // Home page layout
@@ -54,6 +55,7 @@ const App: React.FC = () => {
 
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <Routes>
         <Route
           path="/"
