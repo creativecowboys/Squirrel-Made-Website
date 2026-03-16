@@ -12,6 +12,8 @@ import CartDrawer from './components/CartDrawer';
 import OurStory from './components/OurStory';
 import Contact from './components/Contact';
 import OurPromise from './components/OurPromise';
+import Privacy from './components/Privacy';
+import Terms from './components/Terms';
 import ScrollToTop from './components/ScrollToTop';
 import { CartItem, getCart, addToCart, getCartCount } from './src/cart';
 
@@ -89,6 +91,24 @@ const App: React.FC = () => {
           path="/our-promise"
           element={
             <OurPromise
+              cartCount={cartCount}
+              onCartOpen={() => setIsCartOpen(true)}
+            />
+          }
+        />
+        <Route
+          path="/privacy"
+          element={
+            <Privacy
+              cartCount={cartCount}
+              onCartOpen={() => setIsCartOpen(true)}
+            />
+          }
+        />
+        <Route
+          path="/terms"
+          element={
+            <Terms
               cartCount={cartCount}
               onCartOpen={() => setIsCartOpen(true)}
             />
