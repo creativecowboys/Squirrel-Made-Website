@@ -14,7 +14,7 @@ const OurStory: React.FC<OurStoryProps> = ({ cartCount, onCartOpen }) => {
             <Navbar cartCount={cartCount} onCartOpen={onCartOpen} />
 
             {/* Hero banner */}
-            <section className="pt-32 pb-16 px-6 bg-[#2c3a2e] text-[#f5f2ed] text-center">
+            <section className="min-h-[55vh] flex items-end pb-16 px-6 bg-[#2c3a2e] text-[#f5f2ed] text-center">
                 <div className="max-w-3xl mx-auto space-y-4">
                     <span className="text-xs uppercase tracking-[0.3em] font-medium text-[#f5f2ed]/50">The People Behind the Bottle</span>
                     <h1 className="text-5xl md:text-7xl font-serif italic">Our Story</h1>
