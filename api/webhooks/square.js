@@ -1,5 +1,23 @@
 import crypto from 'crypto';
 
+// Disable Vercel's automatic body parsing so we can read the raw bytes
+// and verify Square's HMAC-SHA256 signature correctly.
+export const config = {
+    api: {
+        bodyParser: false,
+    },
+};
+
+/** Read the raw request body as a Buffer */
+function getRawBody(req) {
+    return new Promise((resolve, reject) => {
+        const chunks = [];
+        req.on('data', (chunk) => chunks.push(chunk));
+        req.on('end', () => resolve(Buffer.concat(chunks)));
+        req.on('error', reject);
+    });
+}
+
 export default async function handler(req, res) {
     if (req.method !== 'POST') {
         return res.status(405).json({ error: 'Method not allowed' });
@@ -13,10 +31,12 @@ export default async function handler(req, res) {
         return res.status(401).json({ error: 'Unauthorized' });
     }
 
-    // Verify Square's HMAC-SHA256 signature
-    const body = JSON.stringify(req.body);
-    const notificationUrl = `https://squirrelmadeproducts.com/api/webhooks/square`;
-    const hmacPayload = notificationUrl + body;
+    // Read the raw body bytes — required for correct HMAC verification.
+    // Square signs: notificationUrl + rawBody (exact bytes as received).
+    const rawBody = await getRawBody(req);
+    const notificationUrl = 'https://squirrelmadeproducts.com/api/webhooks/square';
+    const hmacPayload = notificationUrl + rawBody.toString('utf8');
+
     const expectedSignature = crypto
         .createHmac('sha256', webhookKey)
         .update(hmacPayload)
@@ -27,7 +47,7 @@ export default async function handler(req, res) {
         return res.status(401).json({ error: 'Invalid signature' });
     }
 
-    const event = req.body;
+    const event = JSON.parse(rawBody.toString('utf8'));
 
     // Handle payment.updated — fires when status changes, including → COMPLETED
     if (event.type === 'payment.updated') {
