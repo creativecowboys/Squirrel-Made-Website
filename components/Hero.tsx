@@ -42,19 +42,6 @@ const Hero: React.FC = () => {
               </svg>
             </a>
 
-            <div className="flex -space-x-3 items-center">
-              {[1, 2].map((i) => (
-                <img
-                  key={i}
-                  src={`https://picsum.photos/seed/${i + 10}/100/100`}
-                  alt="Customer"
-                  className="w-10 h-10 rounded-full border-2 border-[#4a5d4e] object-cover"
-                />
-              ))}
-              <div className="pl-6 text-xs font-light max-w-[140px]">
-                Made for the home cook who cares.
-              </div>
-            </div>
           </div>
         </div>
 
