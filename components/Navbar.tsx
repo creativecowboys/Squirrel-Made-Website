@@ -19,7 +19,7 @@ const Navbar: React.FC<NavbarProps> = ({ cartCount, onCartOpen }) => {
 
         <Link to="/" className="flex items-center justify-center">
           <img
-            src="/squirrel made white stacked.png"
+            src="/Squirrel logo white.png"
             alt="Squirrel Made"
             className="h-28 w-auto hover:opacity-80 transition-opacity"
           />
