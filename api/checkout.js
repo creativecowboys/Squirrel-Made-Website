@@ -80,27 +80,20 @@ export default async function handler(req, res) {
     }
 
     try {
-        // ─── Change 1: Use catalog_object_id when available ───────────────────
-        // When catalogObjectId is set, Square links the item to your catalog so
-        // any taxes configured there apply automatically.
-        // Falls back to plain-text name + price if catalogObjectId is missing.
-        const lineItems = items.map((item) => {
-            if (item.catalogObjectId) {
-                return {
-                    catalog_object_id: item.catalogObjectId,
-                    quantity: String(item.quantity),
-                };
-            }
-            // Fallback: plain-text line item (safe during catalog ID rollout)
-            return {
-                name: item.name,
-                quantity: String(item.quantity),
-                base_price_money: {
-                    amount: Math.round(item.price * 100),
-                    currency: 'USD',
-                },
-            };
-        });
+        // ─── Line Items (plain-text) ───────────────────────────────────────────
+        // NOTE: Square's catalog_object_id on a line item requires the *Item Variation* ID,
+        // not the parent Item ID. The IDs in the product catalog are item-level IDs.
+        // To enable catalog linking, retrieve the variation IDs from:
+        //   Square Dashboard → Items → [product] → Variations → copy the Variation ID
+        // Until then, plain-text line items work correctly with the 7% tax fallback below.
+        const lineItems = items.map((item) => ({
+            name: item.name,
+            quantity: String(item.quantity),
+            base_price_money: {
+                amount: Math.round(item.price * 100),
+                currency: 'USD',
+            },
+        }));
 
         // ─── Change 3: Calculate shipping ────────────────────────────────────
         const shipping = getShippingFee(items);
