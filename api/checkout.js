@@ -2,9 +2,9 @@
 // Avoids squareup SDK BigInt serialization issues with Vercel's ESM/CJS handling.
 
 // ─── Change 3: Shipping tier logic ───────────────────────────────────────────
-// Bottles (oils & balsamics): 1–3 → $6.50 | 4+ → Free
+// Bottles (oils & balsamics): 1–2 → $6.50 | 3+ → Free
 // Bags   (spice blends):      1–2 → $3.00 | 3+ → Free
-// Mixed:  bottle rate applies unless bottleCount >= 4 (then whole order is free)
+// Mixed:  bottle rate applies unless bottleCount >= 3 (then whole order is free)
 function getShippingFee(items) {
     const bottleCount = items
         .filter((i) => i.type === 'bottle')
@@ -19,7 +19,7 @@ function getShippingFee(items) {
 
     // Bottles only
     if (hasBottles && !hasBags) {
-        if (bottleCount >= 4) return null; // free
+        if (bottleCount >= 3) return null; // free
         return { name: 'Standard Shipping', amount: 650 }; // $6.50
     }
 
@@ -29,9 +29,9 @@ function getShippingFee(items) {
         return { name: 'Standard Shipping', amount: 300 }; // $3.00
     }
 
-    // Mixed order: bottle rate applies; free if bottles >= 4
+    // Mixed order: bottle rate applies; free if bottles >= 3
     if (hasBottles && hasBags) {
-        if (bottleCount >= 4) return null; // free
+        if (bottleCount >= 3) return null; // free
         return { name: 'Standard Shipping', amount: 650 }; // $6.50 (bottle rate)
     }
 
