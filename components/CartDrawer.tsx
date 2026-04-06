@@ -43,6 +43,8 @@ const CartDrawer: React.FC<CartDrawerProps> = ({ isOpen, onClose, cart, onCartCh
                         name: item.name,
                         price: item.price,
                         quantity: item.quantity,
+                        catalogObjectId: item.catalogObjectId,
+                        type: item.type,
                     })),
                 }),
             });

@@ -7,6 +7,8 @@ export interface CartItem {
     price: number; // USD float, e.g. 21.00
     image: string;
     quantity: number;
+    catalogObjectId?: string; // Square Catalog Object ID for tax/catalog linking
+    type: 'bottle' | 'bag';  // Item type for shipping tier logic
 }
 
 const CART_KEY = 'squirrel_made_cart';

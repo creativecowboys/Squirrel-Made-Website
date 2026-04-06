@@ -8,27 +8,29 @@ interface CatalogProduct {
   name: string;
   price: number; // stored as number now (was string)
   image: string;
+  catalogObjectId: string; // Square Catalog Object ID
+  type: 'bottle' | 'bag';  // for shipping tier logic
 }
 
 const CATALOG: CatalogProduct[] = [
-  { id: 1, category: 'Extra Virgin Olive Oils & Infusions', name: 'Extra Virgin Olive Oil Spanish', price: 20.00, image: '/Product Images/banana-batch-c7bc77d3-beac-44d5-bf93-fad503224061.png' },
-  { id: 2, category: 'Extra Virgin Olive Oils & Infusions', name: 'Basil Infused Extra Virgin Olive Oil', price: 21.00, image: '/Product Images/banana-batch-1d1e8870-be1a-4c47-a641-dc4d5ab8fa9c.png' },
-  { id: 3, category: 'Extra Virgin Olive Oils & Infusions', name: 'Garlic Infused Extra Virgin Olive Oil', price: 21.00, image: '/Product Images/banana-batch-b136802e-75e9-49cc-b12b-7d87e1aa4b66.png' },
-  { id: 4, category: 'Extra Virgin Olive Oils & Infusions', name: 'Black Truffle Extra Virgin Olive Oil', price: 26.00, image: '/Product Images/banana-batch-c0055bd5-940a-41c1-9d87-934f20374ad7.png' },
-  { id: 5, category: 'Extra Virgin Olive Oils & Infusions', name: 'Hatch Green Chili Extra Virgin Olive Oil', price: 21.00, image: '/Product Images/banana-batch-4236deba-4640-47d0-b87a-1367cd2bff9f.png' },
-  { id: 6, category: 'Extra Virgin Olive Oils & Infusions', name: 'Meyer Lemon Extra Virgin Olive Oil', price: 21.00, image: '/Product Images/banana-batch-50f3fe7d-b4c9-4600-82cf-4779648bb356.png' },
-  { id: 7, category: 'Traditional Balsamic Vinegars & Infusions', name: '25 Star Traditional Balsamic Vinegar', price: 20.00, image: '/Product Images/banana-batch-71089f9f-41c9-4d76-8b0c-41e91c1a90e9.png' },
-  { id: 8, category: 'Traditional Balsamic Vinegars & Infusions', name: 'Cranberry Infused 25 Star Traditional Balsamic Vinegar', price: 21.00, image: '/Product Images/banana-batch-16e351c3-8a1a-4d7a-9125-8044acfb6bbd.png' },
-  { id: 9, category: 'Traditional Balsamic Vinegars & Infusions', name: 'Chocolate Infused 25 Star Traditional Balsamic Vinegar', price: 21.00, image: '/Product Images/banana-batch-fa0f28ed-793d-4d2d-8b2c-df5add805c23.png' },
-  { id: 10, category: 'Traditional Balsamic Vinegars & Infusions', name: 'Plum Infused 25 Star Traditional Balsamic Vinegar', price: 21.00, image: '/Product Images/banana-batch-ed223ec6-9cf8-4c80-b49f-5d1c1472d3da.png' },
-  { id: 11, category: 'Traditional Balsamic Vinegars & Infusions', name: 'Raspberry Infused 25 Star Traditional Balsamic Vinegar', price: 21.00, image: '/Product Images/banana-batch-0c48bcdd-2d47-4e86-8ae3-4fa893908358.png' },
-  { id: 12, category: 'White Balsamic Vinegars & Infusions', name: '25 Star White Balsamic Vinegar', price: 20.00, image: '/Product Images/banana-batch-2318a688-c720-4611-a952-e11b0e95595b.png' },
-  { id: 13, category: 'White Balsamic Vinegars & Infusions', name: 'Blood Orange Infused 25 Star White Balsamic Vinegar', price: 21.00, image: '/Product Images/banana-batch-9d43f6f6-6dfe-420c-87c9-7f0857184a71.png' },
-  { id: 14, category: 'White Balsamic Vinegars & Infusions', name: 'Chipotle Lime Infused 25 Star White Balsamic Vinegar', price: 21.00, image: '/Product Images/banana-batch-8bf75ed6-cb01-4b95-a5b6-8d363efc84a8.png' },
-  { id: 15, category: 'White Balsamic Vinegars & Infusions', name: 'Meyer Lemon Infused 25 Star White Balsamic Vinegar', price: 21.00, image: '/Product Images/banana-batch-2fe90beb-b8b5-43fa-b16e-2ad3f030a19f.png' },
-  { id: 16, category: 'Squirrelly Spice Blends', name: "Chef Squirrel's Blend", price: 12.00, image: '/Product Images/banana-batch-a3b69942-e753-4826-8fb9-53cf7775daeb.png' },
-  { id: 17, category: 'Squirrelly Spice Blends', name: 'Mediterranean Squirrel', price: 12.00, image: '/Product Images/banana-batch-b1b838cb-afe7-4a3c-9734-48904b5f2efe.png' },
-  { id: 18, category: 'Squirrelly Spice Blends', name: 'Squirrelly 4 Chile Fiesta', price: 12.00, image: '/Product Images/banana-batch-4f4e19c9-79bb-429a-aa51-ef6283d7031c.png' },
+  { id: 1,  category: 'Extra Virgin Olive Oils & Infusions',          name: 'Extra Virgin Olive Oil Spanish',                              price: 20.00, type: 'bottle', catalogObjectId: 'TRAAE3UBZXRLXBBJLODF3JCS', image: '/Product Images/banana-batch-c7bc77d3-beac-44d5-bf93-fad503224061.png' },
+  { id: 2,  category: 'Extra Virgin Olive Oils & Infusions',          name: 'Basil Infused Extra Virgin Olive Oil',                        price: 21.00, type: 'bottle', catalogObjectId: '44XCIPW4VZSW3Z4AZBWAEUBD', image: '/Product Images/banana-batch-1d1e8870-be1a-4c47-a641-dc4d5ab8fa9c.png' },
+  { id: 3,  category: 'Extra Virgin Olive Oils & Infusions',          name: 'Garlic Infused Extra Virgin Olive Oil',                       price: 21.00, type: 'bottle', catalogObjectId: 'FVV6UAIKSQQFIKIOR75VK5OE', image: '/Product Images/banana-batch-b136802e-75e9-49cc-b12b-7d87e1aa4b66.png' },
+  { id: 4,  category: 'Extra Virgin Olive Oils & Infusions',          name: 'Black Truffle Extra Virgin Olive Oil',                        price: 26.00, type: 'bottle', catalogObjectId: '5S53TD6Q3TYZWQYOGFPQMRXK', image: '/Product Images/banana-batch-c0055bd5-940a-41c1-9d87-934f20374ad7.png' },
+  { id: 5,  category: 'Extra Virgin Olive Oils & Infusions',          name: 'Hatch Green Chili Extra Virgin Olive Oil',                    price: 21.00, type: 'bottle', catalogObjectId: 'PXNFO7YLPBIZY66P3G5MBBOK', image: '/Product Images/banana-batch-4236deba-4640-47d0-b87a-1367cd2bff9f.png' },
+  { id: 6,  category: 'Extra Virgin Olive Oils & Infusions',          name: 'Meyer Lemon Extra Virgin Olive Oil',                          price: 21.00, type: 'bottle', catalogObjectId: 'PJT7KFXFZEAWDR3NNNVEWEUX', image: '/Product Images/banana-batch-50f3fe7d-b4c9-4600-82cf-4779648bb356.png' },
+  { id: 7,  category: 'Traditional Balsamic Vinegars & Infusions',    name: '25 Star Traditional Balsamic Vinegar',                        price: 20.00, type: 'bottle', catalogObjectId: 'ZSCN5QKGCBR72RSZROTUBJKS', image: '/Product Images/banana-batch-71089f9f-41c9-4d76-8b0c-41e91c1a90e9.png' },
+  { id: 8,  category: 'Traditional Balsamic Vinegars & Infusions',    name: 'Cranberry Infused 25 Star Traditional Balsamic Vinegar',      price: 21.00, type: 'bottle', catalogObjectId: 'LYXOUL5PQKA7TODAUYFAJJI5', image: '/Product Images/banana-batch-16e351c3-8a1a-4d7a-9125-8044acfb6bbd.png' },
+  { id: 9,  category: 'Traditional Balsamic Vinegars & Infusions',    name: 'Chocolate Infused 25 Star Traditional Balsamic Vinegar',      price: 21.00, type: 'bottle', catalogObjectId: 'VPXBM5J6MXCDAWA36BRZ4KNH', image: '/Product Images/banana-batch-fa0f28ed-793d-4d2d-8b2c-df5add805c23.png' },
+  { id: 10, category: 'Traditional Balsamic Vinegars & Infusions',    name: 'Plum Infused 25 Star Traditional Balsamic Vinegar',           price: 21.00, type: 'bottle', catalogObjectId: '2SDEMFNJOPT6IB4Q7UQ3XHNS', image: '/Product Images/banana-batch-ed223ec6-9cf8-4c80-b49f-5d1c1472d3da.png' },
+  { id: 11, category: 'Traditional Balsamic Vinegars & Infusions',    name: 'Raspberry Infused 25 Star Traditional Balsamic Vinegar',      price: 21.00, type: 'bottle', catalogObjectId: '4UEN4UGG6SGSJXOA7PRHQVCF', image: '/Product Images/banana-batch-0c48bcdd-2d47-4e86-8ae3-4fa893908358.png' },
+  { id: 12, category: 'White Balsamic Vinegars & Infusions',          name: '25 Star White Balsamic Vinegar',                              price: 20.00, type: 'bottle', catalogObjectId: 'IFS5FTHQTPDFMNFKO72IJZZC', image: '/Product Images/banana-batch-2318a688-c720-4611-a952-e11b0e95595b.png' },
+  { id: 13, category: 'White Balsamic Vinegars & Infusions',          name: 'Blood Orange Infused 25 Star White Balsamic Vinegar',         price: 21.00, type: 'bottle', catalogObjectId: 'UWKUGGEX3TP4UKYHJHHLH2U2', image: '/Product Images/banana-batch-9d43f6f6-6dfe-420c-87c9-7f0857184a71.png' },
+  { id: 14, category: 'White Balsamic Vinegars & Infusions',          name: 'Chipotle Lime Infused 25 Star White Balsamic Vinegar',        price: 21.00, type: 'bottle', catalogObjectId: 'YHP5YBLEGLPGQOICMOLVRRQL', image: '/Product Images/banana-batch-8bf75ed6-cb01-4b95-a5b6-8d363efc84a8.png' },
+  { id: 15, category: 'White Balsamic Vinegars & Infusions',          name: 'Meyer Lemon Infused 25 Star White Balsamic Vinegar',          price: 21.00, type: 'bottle', catalogObjectId: 'SASXTNY2VJH3VW6TGPILDHDD', image: '/Product Images/banana-batch-2fe90beb-b8b5-43fa-b16e-2ad3f030a19f.png' },
+  { id: 16, category: 'Squirrelly Spice Blends',                      name: "Chef Squirrel's Blend",                                      price: 12.00, type: 'bag',    catalogObjectId: 'ALS2OZUV46IJIFMDNO4V4QE4', image: '/Product Images/banana-batch-a3b69942-e753-4826-8fb9-53cf7775daeb.png' },
+  { id: 17, category: 'Squirrelly Spice Blends',                      name: 'Mediterranean Squirrel',                                     price: 12.00, type: 'bag',    catalogObjectId: '3SQSN2B4AYL4N77P2H7463A7', image: '/Product Images/banana-batch-b1b838cb-afe7-4a3c-9734-48904b5f2efe.png' },
+  { id: 18, category: 'Squirrelly Spice Blends',                      name: 'Squirrelly 4 Chile Fiesta',                                  price: 12.00, type: 'bag',    catalogObjectId: 'WLVG2G4I342NVOYLXAFKUUX6', image: '/Product Images/banana-batch-4f4e19c9-79bb-429a-aa51-ef6283d7031c.png' },
 ];
 
 const CATEGORIES = ['All', ...Array.from(new Set(CATALOG.map(p => p.category)))];
@@ -90,7 +92,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }) => {
   const colors = CATEGORY_COLORS[product.category] ?? { dot: 'bg-[#2c3a2e]', badge: 'bg-[#2c3a2e]/10 text-[#2c3a2e]', border: 'border-[#2c3a2e]/20' };
 
   const handleAdd = useCallback(() => {
-    onAddToCart({ id: product.id, name: product.name, price: product.price, image: product.image });
+    onAddToCart({ id: product.id, name: product.name, price: product.price, image: product.image, catalogObjectId: product.catalogObjectId, type: product.type });
     setAdded(true);
     setTimeout(() => setAdded(false), 1600);
   }, [product, onAddToCart]);
