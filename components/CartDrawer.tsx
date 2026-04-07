@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     CartItem,
     removeFromCart,
@@ -16,6 +16,21 @@ interface CartDrawerProps {
 const CartDrawer: React.FC<CartDrawerProps> = ({ isOpen, onClose, cart, onCartChange }) => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
+
+    // When the user hits Back from Square's hosted checkout page, the browser
+    // restores this page from the Back-Forward Cache with isLoading still true.
+    // The pageshow event fires on bfcache restores (event.persisted === true),
+    // giving us a reliable hook to reset the spinner.
+    useEffect(() => {
+        const handlePageShow = (e: PageTransitionEvent) => {
+            if (e.persisted) {
+                setIsLoading(false);
+                setError(null);
+            }
+        };
+        window.addEventListener('pageshow', handlePageShow);
+        return () => window.removeEventListener('pageshow', handlePageShow);
+    }, []);
 
     const subtotal = getCartSubtotal(cart);
 
