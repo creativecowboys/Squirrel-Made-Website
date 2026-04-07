@@ -3,7 +3,6 @@ import {
     CartItem,
     removeFromCart,
     updateQuantity,
-    clearCart,
     getCartSubtotal,
 } from '../src/cart';
 
@@ -55,8 +54,10 @@ const CartDrawer: React.FC<CartDrawerProps> = ({ isOpen, onClose, cart, onCartCh
                 throw new Error(data.error || 'Checkout failed. Please try again.');
             }
 
-            clearCart();
-            onCartChange([]);
+            // Cart is intentionally NOT cleared here — Square's redirect_url
+            // lands back on the site where a successful order confirmation can
+            // clear it. This lets the customer use the browser Back button to
+            // return and edit their cart if needed.
             window.location.href = data.checkoutUrl;
         } catch (err: unknown) {
             const message = err instanceof Error ? err.message : 'An unexpected error occurred.';
@@ -225,6 +226,20 @@ const CartDrawer: React.FC<CartDrawerProps> = ({ isOpen, onClose, cart, onCartCh
                                 </>
                             )}
                         </button>
+
+                        {/* Loading hint + edit cart link */}
+                        {isLoading ? (
+                            <p className="text-center text-xs text-[#2c3a2e]/40">
+                                This usually takes a few seconds — please don't refresh.
+                            </p>
+                        ) : (
+                            <button
+                                onClick={onClose}
+                                className="w-full text-center text-xs text-[#2c3a2e]/50 hover:text-[#2c3a2e] underline underline-offset-2 transition-colors"
+                            >
+                                ← Edit cart
+                            </button>
+                        )}
 
                         {/* Square badge */}
                         <p className="text-center text-xs text-[#2c3a2e]/30">
