@@ -3,7 +3,7 @@ import React from 'react';
 
 const Hero: React.FC = () => {
   return (
-    <section className="relative pt-32 pb-20 md:pt-48 md:pb-32 bg-[#4a5d4e] text-[#f5f2ed] px-6 overflow-hidden">
+    <section className="relative pt-40 pb-20 md:pt-56 md:pb-32 bg-[#4a5d4e] text-[#f5f2ed] px-6 overflow-hidden">
       {/* Decorative floating circle element */}
       <a
         href="#products"

@@ -2,10 +2,19 @@
 // Avoids squareup SDK BigInt serialization issues with Vercel's ESM/CJS handling.
 
 // ─── Change 3: Shipping tier logic ───────────────────────────────────────────
+// Rule 0 (new): Any order with subtotal >= $60 → Free shipping
 // Bottles (oils & balsamics): 1–2 → $6.50 | 3+ → Free
 // Bags   (spice blends):      1–2 → $3.00 | 3+ → Free
 // Mixed:  bottle rate applies unless bottleCount >= 3 (then whole order is free)
 function getShippingFee(items) {
+    // ─── $60+ subtotal override ──────────────────────────────────────────
+    const subtotalCents = items.reduce(
+        (sum, i) => sum + Math.round(i.price * 100) * i.quantity,
+        0
+    );
+    if (subtotalCents >= 6000) return null; // free shipping on orders $60+
+    // ─────────────────────────────────────────────────────────────────────
+
     const bottleCount = items
         .filter((i) => i.type === 'bottle')
         .reduce((sum, i) => sum + i.quantity, 0);

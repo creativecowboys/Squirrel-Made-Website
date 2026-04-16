@@ -34,6 +34,12 @@ const CartDrawer: React.FC<CartDrawerProps> = ({ isOpen, onClose, cart, onCartCh
 
     const subtotal = getCartSubtotal(cart);
 
+    // Free shipping progress
+    const FREE_SHIPPING_THRESHOLD = 60;
+    const shippingProgress = Math.min((subtotal / FREE_SHIPPING_THRESHOLD) * 100, 100);
+    const amountRemaining = Math.max(FREE_SHIPPING_THRESHOLD - subtotal, 0);
+    const hasFreeShipping = subtotal >= FREE_SHIPPING_THRESHOLD;
+
     const handleRemove = (id: number) => {
         onCartChange(removeFromCart(id));
     };
@@ -122,6 +128,38 @@ const CartDrawer: React.FC<CartDrawerProps> = ({ isOpen, onClose, cart, onCartCh
                     </button>
                 </div>
 
+                {/* Free Shipping Progress Bar */}
+                {cart.length > 0 && (
+                    <div className="px-6 py-3 border-b border-[#2c3a2e]/10 bg-[#faf8f5]">
+                        {hasFreeShipping ? (
+                            <div className="flex items-center gap-2 text-[#2c6e2e]">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-4 h-4 flex-shrink-0">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+                                </svg>
+                                <span className="text-xs font-semibold">You've unlocked free shipping!</span>
+                                <span className="text-xs">🎉</span>
+                            </div>
+                        ) : (
+                            <div className="space-y-1.5">
+                                <div className="flex items-center gap-2">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="w-3.5 h-3.5 flex-shrink-0 text-[#2c3a2e]/50">
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 18.75a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 0 1-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 0 0-3.213-9.193 2.056 2.056 0 0 0-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 0 0-10.026 0 1.106 1.106 0 0 0-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12" />
+                                    </svg>
+                                    <p className="text-xs text-[#2c3a2e]/70">
+                                        You're <span className="font-bold text-[#2c3a2e]">${amountRemaining.toFixed(2)}</span> away from free shipping!
+                                    </p>
+                                </div>
+                                <div className="w-full h-1.5 bg-[#2c3a2e]/10 rounded-full overflow-hidden">
+                                    <div
+                                        className="h-full bg-[#8aad6e] rounded-full transition-all duration-500 ease-out"
+                                        style={{ width: `${shippingProgress}%` }}
+                                    />
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                )}
+
                 {/* Body */}
                 <div className="flex-1 overflow-y-auto px-6 py-4">
                     {cart.length === 0 ? (
@@ -208,7 +246,16 @@ const CartDrawer: React.FC<CartDrawerProps> = ({ isOpen, onClose, cart, onCartCh
                             <span className="text-sm text-[#2c3a2e]/60">Subtotal</span>
                             <span className="text-xl font-serif font-bold text-[#2c3a2e]">${subtotal.toFixed(2)}</span>
                         </div>
-                        <p className="text-xs text-[#2c3a2e]/40">Taxes & shipping calculated at checkout.</p>
+                        {hasFreeShipping ? (
+                            <p className="text-xs text-[#2c6e2e] font-medium flex items-center gap-1">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-3 h-3">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+                                </svg>
+                                Free shipping · Taxes calculated at checkout.
+                            </p>
+                        ) : (
+                            <p className="text-xs text-[#2c3a2e]/40">Taxes &amp; shipping calculated at checkout.</p>
+                        )}
 
                         {/* Error */}
                         {error && (

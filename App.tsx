@@ -2,11 +2,13 @@
 import React, { useState, useCallback } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
+import AnnouncementBar from './components/AnnouncementBar';
 import Hero from './components/Hero';
 import Ticker from './components/Ticker';
 import ProductGrid from './components/ProductGrid';
 import TrustBar from './components/TrustBar';
 import BrandStatement from './components/BrandStatement';
+import NewsletterSignup from './components/NewsletterSignup';
 import Footer from './components/Footer';
 import CartDrawer from './components/CartDrawer';
 import OurStory from './components/OurStory';
@@ -24,6 +26,7 @@ const HomePage: React.FC<{
   onCartOpen: () => void;
 }> = ({ cart, onAddToCart, onCartOpen }) => (
   <div className="min-h-screen flex flex-col overflow-x-hidden">
+    <AnnouncementBar />
     <Navbar cartCount={getCartCount(cart)} onCartOpen={onCartOpen} />
     <main className="flex-grow">
       <Hero />
@@ -33,6 +36,7 @@ const HomePage: React.FC<{
       </div>
       <BrandStatement />
       <TrustBar />
+      <NewsletterSignup />
       <Ticker />
     </main>
     <Footer />
