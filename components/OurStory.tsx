@@ -14,7 +14,7 @@ const OurStory: React.FC<OurStoryProps> = ({ cartCount, onCartOpen }) => {
             <Navbar cartCount={cartCount} onCartOpen={onCartOpen} />
 
             {/* Hero banner */}
-            <section className="relative min-h-[55vh] flex items-center justify-center px-6 overflow-hidden">
+            <section className="relative min-h-[55vh] flex flex-col items-center justify-center pt-28 px-6 overflow-hidden">
                 {/* Background image */}
                 <div className="absolute inset-0 z-0">
                     <img
@@ -26,7 +26,7 @@ const OurStory: React.FC<OurStoryProps> = ({ cartCount, onCartOpen }) => {
                 </div>
 
                 {/* Content */}
-                <div className="relative z-10 max-w-3xl mx-auto text-center text-[#f5f2ed] space-y-4 pt-20">
+                <div className="relative z-10 max-w-3xl mx-auto text-center text-[#f5f2ed] space-y-4">
                     <span className="text-xs uppercase tracking-[0.3em] font-medium text-[#f5f2ed]/50">The People Behind the Bottle</span>
                     <h1 className="text-5xl md:text-7xl font-serif italic">Our Story</h1>
                     <div className="w-12 h-0.5 bg-[#8aad6e] mx-auto mt-6" />

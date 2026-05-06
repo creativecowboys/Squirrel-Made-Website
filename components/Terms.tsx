@@ -13,7 +13,7 @@ const Terms: React.FC<TermsProps> = ({ cartCount, onCartOpen }) => {
       <Navbar cartCount={cartCount} onCartOpen={onCartOpen} />
 
       {/* Hero */}
-      <section className="bg-[#4a5d4e] text-[#f5f2ed] pt-40 pb-16 px-6 text-center">
+      <section className="bg-[#4a5d4e] text-[#f5f2ed] min-h-[48vh] flex flex-col items-center justify-center pt-28 px-6 text-center">
         <span className="text-xs uppercase tracking-[0.3em] font-medium text-[#f5f2ed]/50">Legal</span>
         <h1 className="text-5xl md:text-6xl font-serif italic mt-2">Terms of Service</h1>
         <div className="w-12 h-0.5 bg-[#8aad6e] mx-auto mt-6" />

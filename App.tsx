@@ -17,22 +17,25 @@ import OurPromise from './components/OurPromise';
 import Privacy from './components/Privacy';
 import Terms from './components/Terms';
 import ScrollToTop from './components/ScrollToTop';
-import { CartItem, getCart, addToCart, getCartCount } from './src/cart';
+import { ShopifyCart } from './src/shopify';
 
 // Home page layout
 const HomePage: React.FC<{
-  cart: CartItem[];
-  onAddToCart: (item: Omit<CartItem, 'quantity'>) => void;
+  cart: ShopifyCart | null;
+  onCartUpdate: (cart: ShopifyCart) => void;
   onCartOpen: () => void;
-}> = ({ cart, onAddToCart, onCartOpen }) => (
+}> = ({ cart, onCartUpdate, onCartOpen }) => (
   <div className="min-h-screen flex flex-col overflow-x-hidden">
-    <AnnouncementBar />
-    <Navbar cartCount={getCartCount(cart)} onCartOpen={onCartOpen} />
+    <Navbar cartCount={cart?.totalQuantity ?? 0} onCartOpen={onCartOpen} />
     <main className="flex-grow">
       <Hero />
       <Ticker />
       <div id="products">
-        <ProductGrid onAddToCart={onAddToCart} />
+        <ProductGrid
+          cart={cart}
+          onCartUpdate={onCartUpdate}
+          onCartOpen={onCartOpen}
+        />
       </div>
       <BrandStatement />
       <TrustBar />
@@ -44,20 +47,14 @@ const HomePage: React.FC<{
 );
 
 const App: React.FC = () => {
-  const [cart, setCart] = useState<CartItem[]>(getCart);
+  const [cart, setCart] = useState<ShopifyCart | null>(null);
   const [isCartOpen, setIsCartOpen] = useState(false);
 
-  const handleAddToCart = useCallback((item: Omit<CartItem, 'quantity'>) => {
-    const updated = addToCart(item);
-    setCart(updated);
-    setIsCartOpen(true);
-  }, []);
-
-  const handleCartChange = useCallback((updated: CartItem[]) => {
+  const handleCartUpdate = useCallback((updated: ShopifyCart) => {
     setCart(updated);
   }, []);
 
-  const cartCount = getCartCount(cart);
+  const cartCount = cart?.totalQuantity ?? 0;
 
   return (
     <BrowserRouter>
@@ -68,7 +65,7 @@ const App: React.FC = () => {
           element={
             <HomePage
               cart={cart}
-              onAddToCart={handleAddToCart}
+              onCartUpdate={handleCartUpdate}
               onCartOpen={() => setIsCartOpen(true)}
             />
           }
@@ -120,12 +117,15 @@ const App: React.FC = () => {
         />
       </Routes>
 
+      {/* Announcement Bar — persists across all routes */}
+      <AnnouncementBar />
+
       {/* Cart Drawer — persists across all routes */}
       <CartDrawer
         isOpen={isCartOpen}
         onClose={() => setIsCartOpen(false)}
         cart={cart}
-        onCartChange={handleCartChange}
+        onCartChange={handleCartUpdate}
       />
     </BrowserRouter>
   );

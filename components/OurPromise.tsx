@@ -56,7 +56,7 @@ const OurPromise: React.FC<OurPromiseProps> = ({ cartCount, onCartOpen }) => {
             <Navbar cartCount={cartCount} onCartOpen={onCartOpen} />
 
             {/* Hero */}
-            <section className="relative min-h-[55vh] flex items-center pt-28 pb-20 px-6 overflow-hidden">
+            <section className="relative min-h-[55vh] flex flex-col items-center justify-center pt-28 px-6 overflow-hidden">
                 {/* Background image */}
                 <div className="absolute inset-0 z-0">
                     <img
