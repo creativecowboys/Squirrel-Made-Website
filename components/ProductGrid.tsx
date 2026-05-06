@@ -220,7 +220,7 @@ const ProductGrid: React.FC<ProductGridProps> = ({ cart, onCartUpdate, onCartOpe
   }, [cart, onCartUpdate, onCartOpen]);
 
   return (
-    <section className="py-24 px-6 bg-[#f5f2ed]">
+    <section id="products" className="py-24 px-6 bg-[#f5f2ed]">
       <div className="max-w-7xl mx-auto space-y-16">
 
         {/* Header */}
