@@ -1,6 +1,5 @@
-
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 interface NavbarProps {
   cartCount: number;
@@ -8,11 +7,23 @@ interface NavbarProps {
 }
 
 const Navbar: React.FC<NavbarProps> = ({ cartCount, onCartOpen }) => {
+  const { pathname } = useLocation();
+  const navigate = useNavigate();
+
+  const handleShopClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (pathname === '/') {
+      document.getElementById('products')?.scrollIntoView({ behavior: 'smooth' });
+    } else {
+      navigate('/#products');
+    }
+  };
+
   return (
     <nav className="fixed top-8 left-0 right-0 z-50 bg-[#4a5d4e]/90 backdrop-blur-md text-[#f5f2ed] px-6 py-2 border-b border-[#f5f2ed]/10">
       <div className="max-w-7xl mx-auto grid grid-cols-[1fr_auto_1fr] items-center">
         <div className="hidden md:flex gap-8 text-sm font-medium">
-          <a href="/#products" className="hover:opacity-70 transition-opacity">Shop</a>
+          <button onClick={handleShopClick} className="hover:opacity-70 transition-opacity cursor-pointer">Shop</button>
           <Link to="/our-story" className="hover:opacity-70 transition-opacity">Our Story</Link>
           <Link to="/our-promise" className="hover:opacity-70 transition-opacity">Our Promise</Link>
           <Link to="/find-a-retailer" className="hover:opacity-70 transition-opacity">Find a Retailer</Link>
