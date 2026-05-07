@@ -16,6 +16,7 @@ import Contact from './components/Contact';
 import OurPromise from './components/OurPromise';
 import Privacy from './components/Privacy';
 import Terms from './components/Terms';
+import FindARetailer from './components/FindARetailer';
 import ScrollToTop from './components/ScrollToTop';
 import { ShopifyCart } from './src/shopify';
 
@@ -110,6 +111,15 @@ const App: React.FC = () => {
           path="/terms"
           element={
             <Terms
+              cartCount={cartCount}
+              onCartOpen={() => setIsCartOpen(true)}
+            />
+          }
+        />
+        <Route
+          path="/find-a-retailer"
+          element={
+            <FindARetailer
               cartCount={cartCount}
               onCartOpen={() => setIsCartOpen(true)}
             />
