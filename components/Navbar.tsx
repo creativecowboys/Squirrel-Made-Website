@@ -10,7 +10,7 @@ interface NavbarProps {
 const Navbar: React.FC<NavbarProps> = ({ cartCount, onCartOpen }) => {
   return (
     <nav className="fixed top-8 left-0 right-0 z-50 bg-[#4a5d4e]/90 backdrop-blur-md text-[#f5f2ed] px-6 py-2 border-b border-[#f5f2ed]/10">
-      <div className="max-w-7xl mx-auto flex items-center justify-between">
+      <div className="max-w-7xl mx-auto grid grid-cols-[1fr_auto_1fr] items-center">
         <div className="hidden md:flex gap-8 text-sm font-medium">
           <a href="/#products" className="hover:opacity-70 transition-opacity">Shop</a>
           <Link to="/our-story" className="hover:opacity-70 transition-opacity">Our Story</Link>
@@ -26,7 +26,7 @@ const Navbar: React.FC<NavbarProps> = ({ cartCount, onCartOpen }) => {
           />
         </Link>
 
-        <div className="flex items-center gap-8 text-sm font-medium">
+        <div className="flex items-center justify-end gap-8 text-sm font-medium">
           <Link to="/contact" className="hover:opacity-70 transition-opacity">Contact</Link>
 
           {/* Cart button */}
