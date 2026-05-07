@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import Navbar from './Navbar';
 import Footer from './Footer';
 import { CartItem } from '../src/cart';
@@ -9,6 +10,7 @@ interface OurStoryProps {
 }
 
 const OurStory: React.FC<OurStoryProps> = ({ cartCount, onCartOpen }) => {
+    const navigate = useNavigate();
     return (
         <div className="min-h-screen flex flex-col bg-[#faf8f5]">
             <Navbar cartCount={cartCount} onCartOpen={onCartOpen} />
@@ -161,15 +163,15 @@ const OurStory: React.FC<OurStoryProps> = ({ cartCount, onCartOpen }) => {
 
                     {/* CTA */}
                     <div className="text-center pt-8">
-                        <a
-                            href="/#products"
-                            className="inline-flex items-center gap-2 px-8 py-4 bg-[#2c3a2e] text-[#f5f2ed] rounded-full font-semibold text-sm tracking-wide hover:bg-[#4a5d4e] active:scale-95 transition-all duration-200"
+                        <button
+                            onClick={() => navigate('/#products')}
+                            className="inline-flex items-center gap-2 px-8 py-4 bg-[#2c3a2e] text-[#f5f2ed] rounded-full font-semibold text-sm tracking-wide hover:bg-[#4a5d4e] active:scale-95 transition-all duration-200 cursor-pointer"
                         >
                             Shop Our Products
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-4 h-4">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
                             </svg>
-                        </a>
+                        </button>
                     </div>
 
                 </article>
