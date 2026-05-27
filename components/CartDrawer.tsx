@@ -89,14 +89,14 @@ const CartDrawer: React.FC<CartDrawerProps> = ({ isOpen, onClose, cart, onCartCh
       {/* Backdrop */}
       <div
         onClick={onClose}
-        className={`fixed inset-0 z-40 bg-black/40 backdrop-blur-sm transition-opacity duration-300 ${
+        className={`fixed inset-0 z-[70] bg-black/40 backdrop-blur-sm transition-opacity duration-300 ${
           isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
         }`}
       />
 
       {/* Drawer */}
       <div
-        className={`fixed top-0 right-0 z-50 h-full w-full max-w-md bg-[#faf8f5] shadow-2xl flex flex-col transition-transform duration-300 ease-in-out ${
+        className={`fixed top-0 right-0 z-[80] h-full w-full max-w-md bg-[#faf8f5] shadow-2xl flex flex-col transition-transform duration-300 ease-in-out ${
           isOpen ? 'translate-x-0' : 'translate-x-full'
         }`}
         aria-label="Shopping cart"
