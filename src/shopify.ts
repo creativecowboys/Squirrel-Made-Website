@@ -31,6 +31,27 @@ export interface ShopifyProduct {
   featuredImage: ShopifyImage | null;
   images: { edges: { node: ShopifyImage }[] };
   variants: { edges: { node: ShopifyVariant }[] };
+  sellingPlanGroups?: {
+    edges: {
+      node: {
+        name: string;
+        sellingPlans: {
+          edges: {
+            node: {
+              id: string;
+              name: string;
+              description: string | null;
+              priceAdjustments: {
+                adjustmentValue: {
+                  adjustmentPercentage?: number;
+                };
+              }[];
+            };
+          }[];
+        };
+      };
+    }[];
+  };
 }
 
 export interface CartLine {
@@ -45,6 +66,13 @@ export interface CartLine {
       featuredImage: ShopifyImage | null;
     };
   };
+  sellingPlanAllocation?: {
+    sellingPlan: {
+      id: string;
+      name: string;
+      description: string | null;
+    };
+  } | null;
 }
 
 export interface ShopifyCart {
@@ -102,6 +130,29 @@ const PRODUCT_FIELDS = `
         title
         price { amount currencyCode }
         availableForSale
+      }
+    }
+  }
+  sellingPlanGroups(first: 1) {
+    edges {
+      node {
+        name
+        sellingPlans(first: 1) {
+          edges {
+            node {
+              id
+              name
+              description
+              priceAdjustments {
+                adjustmentValue {
+                  ... on SellingPlanPercentagePriceAdjustment {
+                    adjustmentPercentage
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     }
   }
@@ -188,6 +239,13 @@ const CART_FRAGMENT = `
                 title
                 featuredImage { url altText }
               }
+            }
+          }
+          sellingPlanAllocation {
+            sellingPlan {
+              id
+              name
+              description
             }
           }
         }
@@ -299,13 +357,21 @@ export async function getOrCreateCart(): Promise<ShopifyCart> {
 export async function addToCart(
   cartId: string,
   variantId: string,
-  quantity = 1
+  quantity = 1,
+  sellingPlanId?: string
 ): Promise<ShopifyCart> {
+  const lineInput: { merchandiseId: string; quantity: number; sellingPlanId?: string } = {
+    merchandiseId: variantId,
+    quantity,
+  };
+  if (sellingPlanId) {
+    lineInput.sellingPlanId = sellingPlanId;
+  }
   const data = await storefrontFetch<{
     cartLinesAdd: { cart: ShopifyCart; userErrors: { message: string }[] };
   }>(CART_LINES_ADD_MUTATION, {
     cartId,
-    lines: [{ merchandiseId: variantId, quantity }],
+    lines: [lineInput],
   });
 
   if (data.cartLinesAdd.userErrors.length) {

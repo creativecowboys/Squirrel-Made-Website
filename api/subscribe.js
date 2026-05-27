@@ -36,6 +36,8 @@ export default async function handler(req, res) {
         return res.status(500).json({ error: 'Server configuration error.' });
     }
 
+    console.log('[Subscribe] Attempting to subscribe email:', email.trim().toLowerCase());
+
     try {
         const response = await fetch(
             `https://api.resend.com/audiences/${audienceId}/contacts`,

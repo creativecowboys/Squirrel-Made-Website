@@ -216,9 +216,17 @@ const CartDrawer: React.FC<CartDrawerProps> = ({ isOpen, onClose, cart, onCartCh
                       <p className="text-sm text-[#2c3a2e]/60 mt-0.5">
                         {formatPrice(line.merchandise.price.amount)}
                       </p>
+                      {line.sellingPlanAllocation?.sellingPlan && (
+                        <div className="flex items-center gap-1.5 mt-1.5 text-[10px] text-[#8aad6e] font-semibold bg-[#8aad6e]/10 px-2.5 py-0.5 rounded-full w-fit">
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="w-3 h-3 flex-shrink-0">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
+                          </svg>
+                          <span>{line.sellingPlanAllocation.sellingPlan.name}</span>
+                        </div>
+                      )}
 
                       {/* Quantity control */}
-                      <div className="flex items-center gap-2 mt-2">
+                      <div className="flex items-center gap-2 mt-2.5">
                         <button
                           onClick={() => handleQuantity(line, line.quantity - 1)}
                           disabled={isUpdating}

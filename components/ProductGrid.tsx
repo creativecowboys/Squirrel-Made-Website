@@ -62,12 +62,13 @@ const ProductSkeleton: React.FC = () => (
 interface ProductCardProps {
   product: ShopifyProduct;
   collectionHandle: string;
-  onAddToCart: (variantId: string) => Promise<void>;
+  onAddToCart: (variantId: string, sellingPlanId?: string) => Promise<void>;
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({ product, collectionHandle, onAddToCart }) => {
   const [added, setAdded] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [purchaseType, setPurchaseType] = useState<'one-time' | 'subscription'>('one-time');
 
   const colors = COLLECTION_COLORS[collectionHandle] ?? {
     dot: 'bg-[#2c3a2e]', badge: 'bg-[#2c3a2e]/10 text-[#2c3a2e]', border: 'border-[#2c3a2e]/20', label: 'Product',
@@ -76,14 +77,26 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, collectionHandle, on
   const variant = product.variants.edges[0]?.node;
   const imageUrl = product.featuredImage?.url ?? product.images.edges[0]?.node.url;
   const imageAlt = product.featuredImage?.altText ?? product.title;
-  const price = variant ? parseFloat(variant.price.amount) : 0;
+  const regularPrice = variant ? parseFloat(variant.price.amount) : 0;
   const available = variant?.availableForSale ?? false;
+
+  // Subscription checking
+  const sellingPlanGroup = product.sellingPlanGroups?.edges[0]?.node;
+  const sellingPlan = sellingPlanGroup?.sellingPlans.edges[0]?.node;
+  const sellingPlanId = sellingPlan?.id;
+  const discountPercentage = sellingPlan?.priceAdjustments?.[0]?.adjustmentValue?.adjustmentPercentage ?? 0;
+  const hasSubscription = !!sellingPlanId;
+  const subDiscount = discountPercentage > 0 ? discountPercentage : (hasSubscription ? 15 : 0);
+  const subscriptionPrice = regularPrice * (1 - subDiscount / 100);
 
   const handleAdd = useCallback(async () => {
     if (!variant || loading) return;
     setLoading(true);
     try {
-      await onAddToCart(variant.id);
+      await onAddToCart(
+        variant.id,
+        purchaseType === 'subscription' ? sellingPlanId : undefined
+      );
       setAdded(true);
       setTimeout(() => setAdded(false), 1600);
     } catch (err) {
@@ -91,7 +104,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, collectionHandle, on
     } finally {
       setLoading(false);
     }
-  }, [variant, onAddToCart, loading]);
+  }, [variant, onAddToCart, loading, purchaseType, sellingPlanId]);
 
   return (
     <div className={`group relative flex flex-col bg-white rounded-2xl border ${colors.border} overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300`}>
@@ -126,13 +139,69 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, collectionHandle, on
         <h3 className="text-lg font-serif italic text-[#2c3a2e] leading-tight flex-1">
           {product.title}
         </h3>
+
+        {/* Purchase option selector */}
+        {hasSubscription && available && (
+          <div className="flex flex-col gap-2 mt-1">
+            <div className="bg-[#f5f2ed]/70 rounded-xl p-1 border border-[#2c3a2e]/10 flex gap-1">
+              <button
+                type="button"
+                onClick={() => setPurchaseType('one-time')}
+                className={`flex-1 py-1.5 px-3 rounded-lg text-xs font-semibold uppercase tracking-wider transition-all duration-200 ${
+                  purchaseType === 'one-time'
+                    ? 'bg-[#2c3a2e] text-[#f5f2ed] shadow-sm'
+                    : 'text-[#2c3a2e]/60 hover:text-[#2c3a2e] hover:bg-[#2c3a2e]/5'
+                }`}
+              >
+                One-Time
+              </button>
+              <button
+                type="button"
+                onClick={() => setPurchaseType('subscription')}
+                className={`flex-1 py-1.5 px-3 rounded-lg text-xs font-semibold uppercase tracking-wider relative flex items-center justify-center gap-1.5 transition-all duration-200 ${
+                  purchaseType === 'subscription'
+                    ? 'bg-[#8aad6e] text-white shadow-sm'
+                    : 'text-[#2c3a2e]/60 hover:text-[#2c3a2e] hover:bg-[#2c3a2e]/5'
+                }`}
+              >
+                <span>Subscribe</span>
+                <span className={`text-[9px] px-1.5 py-0.5 rounded-full font-bold uppercase tracking-normal ${
+                  purchaseType === 'subscription' ? 'bg-white text-[#8aad6e]' : 'bg-[#b45309]/15 text-[#b45309]'
+                }`}>
+                  -{subDiscount}%
+                </span>
+              </button>
+            </div>
+            {purchaseType === 'subscription' && (
+              <p className="text-[10px] text-[#2c3a2e]/50 italic text-center mt-0.5 flex items-center justify-center gap-1">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-3 h-3 flex-shrink-0 text-[#8aad6e]">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
+                </svg>
+                Delivered monthly. Cancel or skip anytime.
+              </p>
+            )}
+          </div>
+        )}
+
         <div className="flex items-center justify-between gap-3 pt-2 border-t border-[#2c3a2e]/8">
-          <span className="text-2xl font-serif font-bold text-[#2c3a2e]">${price.toFixed(2)}</span>
+          <div className="flex flex-col">
+            {purchaseType === 'subscription' && hasSubscription ? (
+              <div className="flex items-baseline gap-1.5">
+                <span className="text-2xl font-serif font-bold text-[#8aad6e]">${subscriptionPrice.toFixed(2)}</span>
+                <span className="text-sm font-sans line-through text-[#2c3a2e]/40">${regularPrice.toFixed(2)}</span>
+              </div>
+            ) : (
+              <span className="text-2xl font-serif font-bold text-[#2c3a2e]">${regularPrice.toFixed(2)}</span>
+            )}
+            {purchaseType === 'subscription' && hasSubscription && (
+              <span className="text-[9px] uppercase tracking-wider text-[#8aad6e] font-bold -mt-0.5">Monthly</span>
+            )}
+          </div>
           <button
             onClick={handleAdd}
             disabled={!available || loading}
             aria-label={`Add ${product.title} to cart`}
-            className={`flex items-center gap-1.5 px-5 py-2 rounded-full text-xs font-semibold uppercase tracking-wider active:scale-95 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed ${
+            className={`flex items-center gap-1.5 px-5 py-2.5 rounded-full text-xs font-semibold uppercase tracking-wider active:scale-95 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed ${
               added ? 'bg-[#8aad6e] text-white' : 'bg-[#2c3a2e] text-[#f5f2ed] hover:bg-[#4a5d4e]'
             }`}
           >
@@ -157,7 +226,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, collectionHandle, on
 
 interface CategorySectionProps {
   collection: CollectionGroup;
-  onAddToCart: (variantId: string) => Promise<void>;
+  onAddToCart: (variantId: string, sellingPlanId?: string) => Promise<void>;
 }
 
 const CategorySection: React.FC<CategorySectionProps> = ({ collection, onAddToCart }) => {
@@ -208,13 +277,13 @@ const ProductGrid: React.FC<ProductGridProps> = ({ cart, onCartUpdate, onCartOpe
   const activeCollections = activeHandle === 'all' ? collections : collections.filter((c) => c.handle === activeHandle);
   const filteredCount = activeCollections.reduce((s, c) => s + c.products.length, 0);
 
-  const handleAddToCart = useCallback(async (variantId: string) => {
+  const handleAddToCart = useCallback(async (variantId: string, sellingPlanId?: string) => {
     let currentCart = cart;
     if (!currentCart) {
       currentCart = await getOrCreateCart();
       onCartUpdate(currentCart);
     }
-    const updated = await addToCart(currentCart.id, variantId);
+    const updated = await addToCart(currentCart.id, variantId, 1, sellingPlanId);
     onCartUpdate(updated);
     onCartOpen();
   }, [cart, onCartUpdate, onCartOpen]);
