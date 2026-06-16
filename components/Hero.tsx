@@ -2,14 +2,18 @@
 import React from 'react';
 
 const Hero: React.FC = () => {
+  const scrollToProducts = (e: React.MouseEvent) => {
+    e.preventDefault();
+    document.getElementById('products')?.scrollIntoView({ behavior: 'smooth' });
+  };
+
   return (
     <section className="relative pt-40 pb-20 md:pt-56 md:pb-32 bg-[#4a5d4e] text-[#f5f2ed] px-6 overflow-hidden">
-      {/* Decorative floating circle element */}
+      {/* Desktop decorative floating circle */}
       <a
         href="#products"
-        className="absolute top-36 right-[5%] w-32 h-32 md:w-48 md:h-48 rounded-full border border-[#f5f2ed]/20 flex items-center justify-center animate-pulse hover:border-[#f5f2ed]/40 transition-colors cursor-pointer"
-        style={{ scrollBehavior: 'smooth' }}
-        onClick={(e) => { e.preventDefault(); document.getElementById('products')?.scrollIntoView({ behavior: 'smooth' }); }}
+        className="hidden md:flex absolute top-36 right-[5%] w-48 h-48 rounded-full border border-[#f5f2ed]/20 items-center justify-center animate-pulse hover:border-[#f5f2ed]/40 transition-colors cursor-pointer"
+        onClick={scrollToProducts}
       >
         <div className="text-[10px] uppercase tracking-widest text-center">
           Explore<br />Products<br />↓
@@ -19,7 +23,19 @@ const Hero: React.FC = () => {
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
         <div className="space-y-8 relative z-10">
           <div className="space-y-2">
-            <span className="text-xs uppercase tracking-[0.3em] font-medium opacity-70">Artisan Kitchen Solutions</span>
+            <div className="flex items-start justify-between gap-4">
+              <span className="text-xs uppercase tracking-[0.3em] font-medium opacity-70">Artisan Kitchen Solutions</span>
+              {/* Mobile explore circle — inline to avoid overlap */}
+              <a
+                href="#products"
+                onClick={scrollToProducts}
+                className="flex md:hidden w-16 h-16 flex-shrink-0 rounded-full border border-[#f5f2ed]/20 items-center justify-center animate-pulse hover:border-[#f5f2ed]/40 transition-colors cursor-pointer"
+              >
+                <div className="text-[7px] uppercase tracking-widest text-center leading-tight">
+                  Explore<br />Products<br />↓
+                </div>
+              </a>
+            </div>
             <h1 className="text-6xl md:text-8xl font-serif italic leading-[0.9]">
               Real Ingredients.<br />
               <span className="ml-12 md:ml-24">Nothing Hidden.</span>
@@ -33,7 +49,7 @@ const Hero: React.FC = () => {
           <div className="flex flex-col sm:flex-row gap-6 items-start sm:items-center">
             <a
               href="#products"
-              onClick={(e) => { e.preventDefault(); document.getElementById('products')?.scrollIntoView({ behavior: 'smooth' }); }}
+              onClick={scrollToProducts}
               className="group flex items-center gap-4 text-xl font-serif italic hover:gap-6 transition-all underline underline-offset-8 cursor-pointer"
             >
               Shop the Collection

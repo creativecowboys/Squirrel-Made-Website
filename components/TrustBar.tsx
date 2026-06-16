@@ -4,11 +4,11 @@ import { Link } from 'react-router-dom';
 
 const TrustBar: React.FC = () => {
   return (
-    <section className="py-24 px-6 bg-[#f5f2ed]">
+    <section className="py-24 px-6 bg-[#f5f2ed] overflow-hidden">
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
           <div className="space-y-8">
-            <h2 className="text-5xl font-serif italic text-[#2c3a2e] leading-tight">
+            <h2 className="text-3xl md:text-5xl font-serif italic text-[#2c3a2e] leading-tight">
               Read the Label.<br />We Want You To.
             </h2>
             <p className="text-lg opacity-80 leading-relaxed font-light">

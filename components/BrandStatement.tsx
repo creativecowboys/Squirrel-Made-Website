@@ -3,7 +3,7 @@ import React from 'react';
 
 const BrandStatement: React.FC = () => {
   return (
-    <section className="py-32 bg-[#4a5d4e] text-[#f5f2ed] px-6 relative overflow-hidden">
+    <section className="py-16 md:py-32 bg-[#4a5d4e] text-[#f5f2ed] px-6 relative overflow-hidden">
       {/* Background decoration */}
       <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#f5f2ed]/5 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl"></div>
 
