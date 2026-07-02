@@ -27,6 +27,7 @@ const Navbar: React.FC<NavbarProps> = ({ cartCount, onCartOpen }) => {
           <Link to="/our-story" className="hover:opacity-70 transition-opacity">Our Story</Link>
           <Link to="/our-promise" className="hover:opacity-70 transition-opacity">Our Promise</Link>
           <Link to="/find-a-retailer" className="hover:opacity-70 transition-opacity">Find a Retailer</Link>
+          <Link to="/wholesale" className="hover:opacity-70 transition-opacity">Wholesale</Link>
         </div>
 
         <Link to="/" className="flex items-center justify-center">
