@@ -19,6 +19,7 @@ import Terms from './components/Terms';
 import FindARetailer from './components/FindARetailer';
 import Wholesale from './components/Wholesale';
 import ScrollToTop from './components/ScrollToTop';
+import { Analytics } from '@vercel/analytics/react';
 import { ShopifyCart } from './src/shopify';
 
 // Home page layout
@@ -147,6 +148,9 @@ const App: React.FC = () => {
         cart={cart}
         onCartChange={handleCartUpdate}
       />
+
+      {/* Vercel Web Analytics — tracks page views & visitors across all routes */}
+      <Analytics />
     </BrowserRouter>
   );
 };
