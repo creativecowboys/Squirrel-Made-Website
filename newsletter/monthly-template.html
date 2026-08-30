@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>Squirrel Made Products — {{MONTH}} Newsletter</title>
+</head>
+<!--
+  SQUIRREL MADE — MONTHLY NEWSLETTER TEMPLATE
+  ============================================
+  Built from the Aug 2026 send, with three fixes based on that campaign's numbers
+  (42% open rate, but only ~3 clickers out of 66 openers):
+
+    1. PRIMARY CTA MOVED UP. A "Shop Our Products" button and the coupon now sit
+       directly under the intro, so readers see them before the recipe. Previously
+       the only button was below ~800px of recipe and almost nobody reached it.
+    2. COUPON IS NOW CLICKABLE. It was plain text people had to copy by hand.
+    3. ALL LINKS USE https://www.  (WITH the www).
+       In July 2026 the bare domain was not serving the tracked site and 8 of 10
+       newsletter clicks went unrecorded. The apex redirect works again now, but
+       linking straight to www avoids the extra hop and any repeat of that bug.
+
+  PLACEHOLDERS to fill each month:
+    {{MONTH}} {{INTRO_HEADLINE}} {{INTRO_BODY}} {{MARKETS}} {{UPCOMING}}
+    {{RECIPE_*}} {{COUPON_CODE}} {{COUPON_TERMS}}
+-->
+<body style="margin:0; padding:0; background-color:#f5f2ed;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#f5f2ed" style="background-color:#f5f2ed;">
+<tr>
+<td align="center" style="padding-top:24px; padding-bottom:24px; padding-left:12px; padding-right:12px;">
+
+<table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" style="width:600px; max-width:600px;">
+
+<!-- HEADER -->
+<tr>
+<td align="center" bgcolor="#2c3a2e" style="background-color:#2c3a2e; padding-top:32px; padding-bottom:32px; padding-left:24px; padding-right:24px;">
+<a href="https://www.squirrelmadeproducts.com" style="text-decoration:none;"><img src="https://www.squirrelmadeproducts.com/Squirrel%20logo%20white.png" width="200" height="86" border="0" alt="Squirrel Made Products" style="display:block; width:200px; height:auto; max-width:200px;"></a>
+<p style="margin-top:16px; margin-bottom:0; font-family:Georgia, 'Times New Roman', serif; font-style:italic; font-size:15px; line-height:22px; color:#8aad6e;">Real Ingredients. Nothing Hidden.</p>
+</td>
+</tr>
+
+<!-- HERO IMAGE -->
+<tr>
+<td align="center" bgcolor="#2c3a2e" style="background-color:#2c3a2e; font-size:0; line-height:0;">
+<a href="https://www.squirrelmadeproducts.com/#products" style="text-decoration:none;"><img src="https://www.squirrelmadeproducts.com/hero-ingredients.png" width="600" height="300" border="0" alt="Fresh ingredients on a cutting board" style="display:block; width:100%; max-width:600px; height:auto;"></a>
+</td>
+</tr>
+
+<!-- DATELINE -->
+<tr>
+<td align="center" bgcolor="#8aad6e" style="background-color:#8aad6e; padding-top:12px; padding-bottom:12px; padding-left:24px; padding-right:24px;">
+<p style="margin-top:0; margin-bottom:0; font-family:Arial, Helvetica, sans-serif; font-size:11px; line-height:16px; letter-spacing:2px; text-transform:uppercase; color:#ffffff; font-weight:bold;">{{MONTH}} Newsletter</p>
+</td>
+</tr>
+
+<!-- INTRO -->
+<tr>
+<td bgcolor="#ffffff" style="background-color:#ffffff; padding-top:36px; padding-bottom:8px; padding-left:36px; padding-right:36px;">
+<p style="margin-top:0; margin-bottom:20px; font-family:Georgia, 'Times New Roman', serif; font-size:26px; line-height:34px; color:#2c3a2e; font-weight:normal;">{{INTRO_HEADLINE}}</p>
+<p style="margin-top:0; margin-bottom:0; font-family:Arial, Helvetica, sans-serif; font-size:16px; line-height:26px; color:#4a5d4e;">{{INTRO_BODY}}</p>
+</td>
+</tr>
+
+<!-- ============================================================ -->
+<!-- PRIMARY CTA — kept ABOVE the recipe on purpose. Do not move  -->
+<!-- this below the fold; that is what suppressed clicks in Aug.  -->
+<!-- ============================================================ -->
+<tr>
+<td bgcolor="#ffffff" style="background-color:#ffffff; padding-top:28px; padding-bottom:8px; padding-left:36px; padding-right:36px;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#faf8f5" style="background-color:#faf8f5; border:1px solid #e6e2db;">
+<tr>
+<td align="center" style="padding-top:26px; padding-bottom:26px; padding-left:20px; padding-right:20px;">
+<p style="margin-top:0; margin-bottom:6px; font-family:Arial, Helvetica, sans-serif; font-size:11px; line-height:16px; letter-spacing:2px; text-transform:uppercase; color:#8aad6e; font-weight:bold;">This Month&rsquo;s Offer</p>
+<p style="margin-top:0; margin-bottom:16px; font-family:Georgia, 'Times New Roman', serif; font-size:22px; line-height:30px; color:#2c3a2e;">Take 15% off &mdash; code <strong>{{COUPON_CODE}}</strong></p>
+
+<!-- Clickable button -->
+<table role="presentation" cellpadding="0" cellspacing="0" border="0" align="center" style="margin:0 auto 14px auto;">
+<tr>
+<td align="center" bgcolor="#8aad6e" style="background-color:#8aad6e;">
+<a href="https://www.squirrelmadeproducts.com/#products" style="display:block; padding-top:14px; padding-bottom:14px; padding-left:38px; padding-right:38px; font-family:Arial, Helvetica, sans-serif; font-size:15px; line-height:20px; letter-spacing:1px; text-transform:uppercase; font-weight:bold; color:#ffffff; text-decoration:none;">Shop Our Products</a>
+</td>
+</tr>
+</table>
+
+<p style="margin-top:0; margin-bottom:0; font-family:Arial, Helvetica, sans-serif; font-size:12px; line-height:18px; color:#4a5d4e;">{{COUPON_TERMS}}</p>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+
+<!-- DIVIDER -->
+<tr>
+<td bgcolor="#ffffff" style="background-color:#ffffff; padding-top:28px; padding-bottom:0; padding-left:36px; padding-right:36px;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td height="1" bgcolor="#f0ede8" style="background-color:#f0ede8; font-size:0; line-height:0; height:1px;">&nbsp;</td></tr></table>
+</td>
+</tr>
+
+<!-- HAPPENINGS -->
+<tr>
+<td bgcolor="#ffffff" style="background-color:#ffffff; padding-top:32px; padding-bottom:8px; padding-left:36px; padding-right:36px;">
+<p style="margin-top:0; margin-bottom:6px; font-family:Arial, Helvetica, sans-serif; font-size:11px; line-height:16px; letter-spacing:2px; text-transform:uppercase; color:#8aad6e; font-weight:bold;">Happenings</p>
+<p style="margin-top:0; margin-bottom:20px; font-family:Georgia, 'Times New Roman', serif; font-size:24px; line-height:32px; color:#2c3a2e;">Where to find us</p>
+</td>
+</tr>
+<tr>
+<td bgcolor="#ffffff" style="background-color:#ffffff; padding-top:0; padding-bottom:8px; padding-left:36px; padding-right:36px;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#faf8f5" style="background-color:#faf8f5;">
+<tr>
+<td style="padding-top:20px; padding-bottom:20px; padding-left:24px; padding-right:24px; border-left:3px solid #8aad6e;">
+{{MARKETS}}
+</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td bgcolor="#ffffff" style="background-color:#ffffff; padding-top:24px; padding-bottom:32px; padding-left:36px; padding-right:36px;">
+<p style="margin-top:0; margin-bottom:0; font-family:Arial, Helvetica, sans-serif; font-size:16px; line-height:26px; color:#4a5d4e;">{{UPCOMING}}</p>
+</td>
+</tr>
+
+<!-- RECIPE -->
+<tr>
+<td bgcolor="#faf8f5" style="background-color:#faf8f5; padding-top:36px; padding-bottom:10px; padding-left:36px; padding-right:36px;">
+<p style="margin-top:0; margin-bottom:6px; font-family:Arial, Helvetica, sans-serif; font-size:11px; line-height:16px; letter-spacing:2px; text-transform:uppercase; color:#8aad6e; font-weight:bold;">From Our Kitchen</p>
+<p style="margin-top:0; margin-bottom:14px; font-family:Georgia, 'Times New Roman', serif; font-size:26px; line-height:34px; color:#2c3a2e;">{{RECIPE_TITLE}}</p>
+<p style="margin-top:0; margin-bottom:18px; font-family:Arial, Helvetica, sans-serif; font-size:15px; line-height:24px; color:#4a5d4e;">{{RECIPE_BLURB}}</p>
+</td>
+</tr>
+<tr>
+<td bgcolor="#faf8f5" style="background-color:#faf8f5; padding-top:0; padding-bottom:0; padding-left:36px; padding-right:36px;">
+<p style="margin-top:0; margin-bottom:12px; font-family:Arial, Helvetica, sans-serif; font-size:12px; line-height:18px; letter-spacing:2px; text-transform:uppercase; color:#2c3a2e; font-weight:bold;">Ingredients</p>
+{{RECIPE_INGREDIENTS}}
+</td>
+</tr>
+<tr>
+<td bgcolor="#faf8f5" style="background-color:#faf8f5; padding-top:20px; padding-bottom:36px; padding-left:36px; padding-right:36px;">
+<p style="margin-top:0; margin-bottom:12px; font-family:Arial, Helvetica, sans-serif; font-size:12px; line-height:18px; letter-spacing:2px; text-transform:uppercase; color:#2c3a2e; font-weight:bold;">Instructions</p>
+{{RECIPE_INSTRUCTIONS}}
+</td>
+</tr>
+
+<!-- SPECIALS + REPEAT CTA -->
+<tr>
+<td bgcolor="#2c3a2e" style="background-color:#2c3a2e; padding-top:36px; padding-bottom:36px; padding-left:36px; padding-right:36px;">
+<p style="margin-top:0; margin-bottom:6px; font-family:Arial, Helvetica, sans-serif; font-size:11px; line-height:16px; letter-spacing:2px; text-transform:uppercase; color:#8aad6e; font-weight:bold;">Specials</p>
+<p style="margin-top:0; margin-bottom:18px; font-family:Georgia, 'Times New Roman', serif; font-size:24px; line-height:32px; color:#f5f2ed;">Two ways to save</p>
+<p style="margin-top:0; margin-bottom:10px; font-family:Arial, Helvetica, sans-serif; font-size:16px; line-height:26px; color:#f5f2ed;"><strong style="color:#ffffff;">Subscribe &amp; Save 15%</strong> on all of your favorite products.</p>
+<p style="margin-top:0; margin-bottom:28px; font-family:Arial, Helvetica, sans-serif; font-size:16px; line-height:26px; color:#f5f2ed;"><strong style="color:#ffffff;">Free shipping</strong> on orders of $60 or more.</p>
+
+<!-- Coupon repeated, now a clickable block -->
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#f5f2ed" style="background-color:#f5f2ed;">
+<tr>
+<td align="center" style="padding-top:22px; padding-bottom:22px; padding-left:20px; padding-right:20px;">
+<a href="https://www.squirrelmadeproducts.com/#products" style="text-decoration:none; display:block;">
+<p style="margin-top:0; margin-bottom:8px; font-family:Arial, Helvetica, sans-serif; font-size:11px; line-height:16px; letter-spacing:2px; text-transform:uppercase; color:#4a5d4e; font-weight:bold;">Take 15% Off &mdash; Use Code</p>
+<p style="margin-top:0; margin-bottom:10px; font-family:Georgia, 'Times New Roman', serif; font-size:30px; line-height:38px; letter-spacing:3px; color:#2c3a2e; font-weight:bold;">{{COUPON_CODE}}</p>
+<p style="margin-top:0; margin-bottom:0; font-family:Arial, Helvetica, sans-serif; font-size:12px; line-height:18px; color:#4a5d4e;">{{COUPON_TERMS}}</p>
+</a>
+</td>
+</tr>
+</table>
+
+<table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin-top:26px;">
+<tr>
+<td align="center" bgcolor="#8aad6e" style="background-color:#8aad6e;">
+<a href="https://www.squirrelmadeproducts.com/#products" style="display:block; padding-top:14px; padding-bottom:14px; padding-left:34px; padding-right:34px; font-family:Arial, Helvetica, sans-serif; font-size:14px; line-height:20px; letter-spacing:1px; text-transform:uppercase; font-weight:bold; color:#ffffff; text-decoration:none;">Shop Our Products</a>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+
+<!-- SIGN OFF -->
+<tr>
+<td bgcolor="#ffffff" style="background-color:#ffffff; padding-top:36px; padding-bottom:36px; padding-left:36px; padding-right:36px;">
+<p style="margin-top:0; margin-bottom:20px; font-family:Georgia, 'Times New Roman', serif; font-style:italic; font-size:20px; line-height:28px; color:#2c3a2e;">Until then, make delicious food and enjoy!</p>
+<p style="margin-top:0; margin-bottom:0; font-family:Arial, Helvetica, sans-serif; font-size:16px; line-height:24px; color:#2c3a2e;"><strong>Jeremy</strong><br><span style="font-size:14px; color:#4a5d4e;">Squirrel Made Products</span></p>
+</td>
+</tr>
+
+<!-- FOOTER -->
+<tr>
+<td bgcolor="#2c3a2e" style="background-color:#2c3a2e; padding-top:32px; padding-bottom:32px; padding-left:36px; padding-right:36px;">
+<p style="margin-top:0; margin-bottom:18px; font-family:Georgia, 'Times New Roman', serif; font-style:italic; font-size:17px; line-height:26px; color:#8aad6e; text-align:center;">&ldquo;Real ingredients. Honest food. Made with care.&rdquo;</p>
+<p style="margin-top:0; margin-bottom:14px; font-family:Arial, Helvetica, sans-serif; font-size:13px; line-height:20px; color:#f5f2ed; text-align:center;">
+<a href="https://www.squirrelmadeproducts.com" style="color:#f5f2ed; text-decoration:underline;">Website</a>&nbsp;&nbsp;&middot;&nbsp;&nbsp;<a href="https://www.instagram.com/squirrelmadeproducts" style="color:#f5f2ed; text-decoration:underline;">Instagram</a>&nbsp;&nbsp;&middot;&nbsp;&nbsp;<a href="https://www.squirrelmadeproducts.com/#products" style="color:#f5f2ed; text-decoration:underline;">Shop</a>
+</p>
+<p style="margin-top:0; margin-bottom:8px; font-family:Arial, Helvetica, sans-serif; font-size:11px; line-height:18px; color:#8aad6e; text-align:center;">&copy; Squirrel Made Products &mdash; 2026<br>Villa Rica, Georgia</p>
+<p style="margin-top:0; margin-bottom:0; font-family:Arial, Helvetica, sans-serif; font-size:11px; line-height:18px; color:#8aad6e; text-align:center;"><a href="{{{RESEND_UNSUBSCRIBE_URL}}}" style="color:#8aad6e; text-decoration:underline;">Unsubscribe</a></p>
+</td>
+</tr>
+
+</table>
+</td>
+</tr>
+</table>
+</body>
+</html>

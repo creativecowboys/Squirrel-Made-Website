@@ -8,6 +8,7 @@ import {
   getCartSubtotal,
   formatPrice,
 } from '../src/shopify';
+import { trackInitiateCheckout } from '../src/tracking';
 
 interface CartDrawerProps {
   isOpen: boolean;
@@ -80,6 +81,7 @@ const CartDrawer: React.FC<CartDrawerProps> = ({ isOpen, onClose, cart, onCartCh
     if (!cart?.checkoutUrl || lines.length === 0) return;
     setIsCheckingOut(true);
     setError(null);
+    trackInitiateCheckout(subtotal, totalQuantity);
     // Redirect to Shopify's native hosted checkout
     window.location.href = cart.checkoutUrl;
   };

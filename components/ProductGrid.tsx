@@ -7,6 +7,7 @@ import {
   ShopifyProduct,
   ShopifyCart,
 } from '../src/shopify';
+import { trackAddToCart } from '../src/tracking';
 
 // ─── Visual config ────────────────────────────────────────────────────────────
 
@@ -97,6 +98,12 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, collectionHandle, on
         variant.id,
         purchaseType === 'subscription' ? sellingPlanId : undefined
       );
+      trackAddToCart({
+        productId: product.id,
+        productTitle: product.title,
+        value: purchaseType === 'subscription' ? subscriptionPrice : regularPrice,
+        isSubscription: purchaseType === 'subscription',
+      });
       setAdded(true);
       setTimeout(() => setAdded(false), 1600);
     } catch (err) {
@@ -104,7 +111,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, collectionHandle, on
     } finally {
       setLoading(false);
     }
-  }, [variant, onAddToCart, loading, purchaseType, sellingPlanId]);
+  }, [variant, onAddToCart, loading, purchaseType, sellingPlanId, product, regularPrice, subscriptionPrice]);
 
   return (
     <div className={`group relative flex flex-col bg-white rounded-2xl border ${colors.border} overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300`}>
