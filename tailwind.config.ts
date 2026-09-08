@@ -6,7 +6,8 @@ const config: Config = {
     extend: {
       fontFamily: {
         sans: ['var(--font-inter)', 'sans-serif'],
-        serif: ['var(--font-playfair)', 'serif'],
+        // Deliberately Tailwind's default serif stack — see the FONT NOTE in app/layout.tsx.
+        serif: ['ui-serif', 'Georgia', 'Cambria', '"Times New Roman"', 'Times', 'serif'],
       },
     },
   },

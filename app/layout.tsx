@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Inter, Playfair_Display } from 'next/font/google';
+import { Inter } from 'next/font/google';
 import Script from 'next/script';
 import { Analytics } from '@vercel/analytics/next';
 import './globals.css';
@@ -11,7 +11,7 @@ import MetaPixel from '@/components/MetaPixel';
 import JsonLd from '@/components/JsonLd';
 import { PIXEL_ID } from '@/lib/tracking';
 
-// Same two Google Fonts the old site loaded from fonts.googleapis.com, now self-hosted by Next.
+// Body font, self-hosted by Next (the old site loaded it from fonts.googleapis.com).
 const inter = Inter({
   subsets: ['latin'],
   weight: ['300', '400', '500', '600'],
@@ -19,12 +19,14 @@ const inter = Inter({
   variable: '--font-inter',
 });
 
-const playfair = Playfair_Display({
-  subsets: ['latin'],
-  style: ['normal', 'italic'],
-  display: 'swap',
-  variable: '--font-playfair',
-});
+// FONT NOTE: the old site also loaded Playfair Display and set `.font-serif` to it, but the
+// Tailwind play CDN injected its own `.font-serif` rule *after* that override, so headings
+// actually rendered in the browser's default serif (Georgia on Mac/Windows). We match what
+// visitors see today. To switch headings to Playfair Display:
+//   1. import { Playfair_Display } from 'next/font/google' and create it like `inter` above
+//      with variable: '--font-playfair', style: ['normal', 'italic'];
+//   2. add its .variable to the <html> className below;
+//   3. in tailwind.config.ts set fontFamily.serif to ['var(--font-playfair)', 'serif'].
 
 const GA4_ID = process.env.NEXT_PUBLIC_GA4_ID;
 const GSC_TOKEN = process.env.NEXT_PUBLIC_GSC_TOKEN;
@@ -89,7 +91,7 @@ const websiteJsonLd = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" style={{ scrollBehavior: 'smooth' }} className={`${inter.variable} ${playfair.variable}`}>
+    <html lang="en" style={{ scrollBehavior: 'smooth' }} className={inter.variable}>
       <body className="bg-[#f5f2ed] text-[#2c3a2e] selection:bg-[#4a5d4e] selection:text-white">
         {/* Facebook Pixel noscript fallback */}
         <noscript>
