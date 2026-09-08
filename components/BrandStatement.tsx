@@ -1,4 +1,3 @@
-
 import React from 'react';
 
 const BrandStatement: React.FC = () => {
@@ -12,7 +11,7 @@ const BrandStatement: React.FC = () => {
           We believe your pantry deserves better.
         </h2>
         <p className="text-lg md:text-xl font-light opacity-80 leading-relaxed max-w-2xl mx-auto">
-          Most of what's on supermarket shelves is made to last forever — because it was never really alive to begin with. Squirrel Made started with a simple idea: what if your olive oil actually tasted like olives? What if your spice blend was made from ingredients you'd recognise?
+          Most of what&apos;s on supermarket shelves is made to last forever — because it was never really alive to begin with. Squirrel Made started with a simple idea: what if your olive oil actually tasted like olives? What if your spice blend was made from ingredients you&apos;d recognise?
         </p>
         <p className="text-lg md:text-xl font-light opacity-80 leading-relaxed max-w-2xl mx-auto">
           Everything we make is small-batch, all-natural, and built from real ingredients — the kind you can pronounce and feel good about. No artificial additives. No shortcuts. Just honest food made for the way you actually cook.

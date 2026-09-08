@@ -1,6 +1,5 @@
-
 import React from 'react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 
 const TrustBar: React.FC = () => {
   return (
@@ -12,7 +11,7 @@ const TrustBar: React.FC = () => {
               Read the Label.<br />We Want You To.
             </h2>
             <p className="text-lg opacity-80 leading-relaxed font-light">
-              We put every ingredient on the label because we're proud of every ingredient. You won't find numbers, fillers, artificial preservatives, or anything that needs explaining.
+              We put every ingredient on the label because we&apos;re proud of every ingredient. You won&apos;t find numbers, fillers, artificial preservatives, or anything that needs explaining.
             </p>
 
             <ul className="space-y-4">
@@ -32,7 +31,7 @@ const TrustBar: React.FC = () => {
               ))}
             </ul>
 
-            <Link to="/our-promise" className="group flex items-center gap-2 text-sm font-bold uppercase tracking-widest text-[#2c3a2e] pt-6 hover:opacity-70 transition-opacity">
+            <Link href="/our-promise" className="group flex items-center gap-2 text-sm font-bold uppercase tracking-widest text-[#2c3a2e] pt-6 hover:opacity-70 transition-opacity">
               Our Full Promise
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="group-hover:translate-x-1 transition-transform">
                 <path d="M5 12h14M12 5l7 7-7 7" />

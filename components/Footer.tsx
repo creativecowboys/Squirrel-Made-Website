@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 
 const Footer: React.FC = () => {
   return (
@@ -26,14 +26,14 @@ const Footer: React.FC = () => {
         </div>
 
         <div className="flex gap-8 text-xs font-medium uppercase tracking-widest">
-          <Link to="/privacy" className="hover:text-[#f5f2ed] transition-colors">Privacy</Link>
-          <Link to="/terms" className="hover:text-[#f5f2ed] transition-colors">Terms</Link>
+          <Link href="/privacy" className="hover:text-[#f5f2ed] transition-colors">Privacy</Link>
+          <Link href="/terms" className="hover:text-[#f5f2ed] transition-colors">Terms</Link>
         </div>
       </div>
 
       <div className="max-w-7xl mx-auto mt-12 pt-12 border-t border-[#f5f2ed]/5 text-center space-y-3">
         <p className="font-serif italic text-2xl text-[#f5f2ed]/40">
-          "Real ingredients. Honest food. Made with care."
+          &quot;Real ingredients. Honest food. Made with care.&quot;
         </p>
         <p className="text-[10px] uppercase tracking-widest text-[#f5f2ed]/30">
           Powered by{' '}

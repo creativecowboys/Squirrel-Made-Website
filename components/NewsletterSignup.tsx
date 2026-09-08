@@ -1,3 +1,4 @@
+'use client';
 
 import React, { useState } from 'react';
 
@@ -14,8 +15,7 @@ const NewsletterSignup: React.FC = () => {
     setMessage('');
 
     try {
-      const apiUrl = import.meta.env.VITE_SUBSCRIBE_API_URL || '/api/subscribe';
-      const res = await fetch(apiUrl, {
+      const res = await fetch('/api/subscribe', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: email.trim() }),
@@ -56,7 +56,7 @@ const NewsletterSignup: React.FC = () => {
             Stay in the Loop
           </h2>
           <p className="text-base md:text-lg font-light opacity-80 leading-relaxed max-w-lg mx-auto">
-            Be the first to know about new products, seasonal recipes, and where to find us at local farmers' markets.
+            Be the first to know about new products, seasonal recipes, and where to find us at local farmers&apos; markets.
           </p>
         </div>
 

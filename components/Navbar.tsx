@@ -1,21 +1,21 @@
+'use client';
+
 import React from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import Link from 'next/link';
+import { usePathname, useRouter } from 'next/navigation';
+import { useCart } from '@/lib/cart-context';
 
-interface NavbarProps {
-  cartCount: number;
-  onCartOpen: () => void;
-}
-
-const Navbar: React.FC<NavbarProps> = ({ cartCount, onCartOpen }) => {
-  const { pathname } = useLocation();
-  const navigate = useNavigate();
+const Navbar: React.FC = () => {
+  const pathname = usePathname();
+  const router = useRouter();
+  const { cartCount, openCart } = useCart();
 
   const handleShopClick = (e: React.MouseEvent) => {
     e.preventDefault();
     if (pathname === '/') {
       document.getElementById('products')?.scrollIntoView({ behavior: 'smooth' });
     } else {
-      navigate('/#products');
+      router.push('/#products');
     }
   };
 
@@ -24,13 +24,13 @@ const Navbar: React.FC<NavbarProps> = ({ cartCount, onCartOpen }) => {
       <div className="max-w-7xl mx-auto grid grid-cols-[1fr_auto_1fr] items-center">
         <div className="hidden md:flex gap-8 text-sm font-medium">
           <button onClick={handleShopClick} className="hover:opacity-70 transition-opacity cursor-pointer">Shop</button>
-          <Link to="/our-story" className="hover:opacity-70 transition-opacity">Our Story</Link>
-          <Link to="/our-promise" className="hover:opacity-70 transition-opacity">Our Promise</Link>
-          <Link to="/find-a-retailer" className="hover:opacity-70 transition-opacity">Find a Retailer</Link>
-          <Link to="/wholesale" className="hover:opacity-70 transition-opacity">Wholesale</Link>
+          <Link href="/our-story" className="hover:opacity-70 transition-opacity">Our Story</Link>
+          <Link href="/our-promise" className="hover:opacity-70 transition-opacity">Our Promise</Link>
+          <Link href="/find-a-retailer" className="hover:opacity-70 transition-opacity">Find a Retailer</Link>
+          <Link href="/wholesale" className="hover:opacity-70 transition-opacity">Wholesale</Link>
         </div>
 
-        <Link to="/" className="flex items-center justify-center">
+        <Link href="/" className="flex items-center justify-center">
           <img
             src="/Squirrel logo white.png"
             alt="Squirrel Made"
@@ -39,12 +39,12 @@ const Navbar: React.FC<NavbarProps> = ({ cartCount, onCartOpen }) => {
         </Link>
 
         <div className="flex items-center justify-end gap-3 md:gap-8 text-sm font-medium">
-          <Link to="/contact" className="hover:opacity-70 transition-opacity">Contact</Link>
+          <Link href="/contact" className="hover:opacity-70 transition-opacity">Contact</Link>
 
           {/* Cart button */}
           <button
             id="cart-open-button"
-            onClick={onCartOpen}
+            onClick={openCart}
             aria-label={`Open cart${cartCount > 0 ? ` (${cartCount} items)` : ''}`}
             className="relative flex items-center gap-2 cursor-pointer hover:opacity-80 transition-opacity group"
           >
