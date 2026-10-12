@@ -68,6 +68,7 @@ const organizationJsonLd = {
   '@id': `${SITE_URL}/#organization`,
   name: SITE_NAME,
   url: SITE_URL,
+  description: DEFAULT_DESCRIPTION,
   logo: `${SITE_URL}/favicon.png`,
   email: CONTACT.email,
   telephone: CONTACT.phone,
