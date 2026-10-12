@@ -26,3 +26,82 @@ body {
   border-radius: 999px;
   aspect-ratio: 2 / 3;
 }
+
+/* ─── Print view ──────────────────────────────────────────────────────────────
+   Used by the recipe pages (app/recipes/[slug]) so "Print this recipe" produces a
+   clean card instead of the whole site. Elements marked .print-hide drop out,
+   .print-only blocks appear, and backgrounds go white to save ink. */
+@media print {
+  /* `.fixed` catches the announcement bar, the nav and the cart drawer — all of which
+     are position-fixed chrome and have no business on paper. */
+  body:has(.recipe-sheet) nav,
+  body:has(.recipe-sheet) footer,
+  body:has(.recipe-sheet) .fixed,
+  body:has(.recipe-sheet) .print-hide {
+    display: none !important;
+  }
+
+  .print-only {
+    display: block !important;
+  }
+
+  html:has(.recipe-sheet),
+  body:has(.recipe-sheet) {
+    background: #fff !important;
+    color: #000 !important;
+    font-size: 12pt;
+  }
+
+  /* The page wrapper carries the cream background colour. */
+  body:has(.recipe-sheet) > div {
+    background: #fff !important;
+  }
+
+  .recipe-sheet {
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .recipe-sheet section,
+  .recipe-sheet div,
+  .recipe-sheet li,
+  .recipe-sheet span {
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+
+  .recipe-sheet h1,
+  .recipe-sheet h2,
+  .recipe-sheet h3,
+  .recipe-sheet li,
+  .recipe-sheet p,
+  .recipe-sheet dt,
+  .recipe-sheet dd,
+  .recipe-sheet span {
+    color: #000 !important;
+  }
+
+  /* Step numbers: the filled dark circle goes transparent above, so give the number
+     an outline instead of leaving black-on-black. */
+  .recipe-sheet ol > li > span:first-child {
+    border: 1px solid #000 !important;
+    font-weight: 700;
+  }
+
+  /* Keep an ingredient group or a numbered step from splitting across pages. */
+  .recipe-sheet li,
+  .recipe-sheet ol,
+  .recipe-sheet ul {
+    break-inside: avoid;
+  }
+
+  .recipe-sheet a {
+    text-decoration: none;
+    color: #000 !important;
+  }
+
+  @page {
+    margin: 1.5cm;
+  }
+}
