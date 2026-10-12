@@ -1,6 +1,7 @@
 import type { MetadataRoute } from 'next';
 import { SITE_URL } from '@/lib/site';
 import { fetchProductHandles, fetchCollections, STOREFRONT_COLLECTION_HANDLES } from '@/lib/shopify';
+import { RECIPE_SLUGS } from '@/lib/recipes';
 
 // Must be a literal (Next requirement) — keep in sync with CATALOG_REVALIDATE_SECONDS in lib/shopify.ts.
 export const revalidate = 3600;
@@ -11,6 +12,13 @@ const STATIC_PAGES: { path: string; priority: number; changeFrequency: MetadataR
   { path: '/our-promise', priority: 0.6, changeFrequency: 'yearly' },
   { path: '/find-a-retailer', priority: 0.7, changeFrequency: 'monthly' },
   { path: '/wholesale', priority: 0.7, changeFrequency: 'yearly' },
+  { path: '/recipes', priority: 0.8, changeFrequency: 'monthly' },
+  { path: '/clean-eating', priority: 0.7, changeFrequency: 'monthly' },
+  ...RECIPE_SLUGS.map((slug) => ({
+    path: `/recipes/${slug}`,
+    priority: 0.7,
+    changeFrequency: 'yearly' as const,
+  })),
   { path: '/contact', priority: 0.6, changeFrequency: 'yearly' },
   { path: '/privacy', priority: 0.2, changeFrequency: 'yearly' },
   { path: '/terms', priority: 0.2, changeFrequency: 'yearly' },

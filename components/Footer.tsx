@@ -26,7 +26,10 @@ const Footer: React.FC = () => {
           © Squirrel Made Products - 2026
         </div>
 
-        <div className="flex gap-8 text-xs font-medium uppercase tracking-widest">
+        {/* The top nav links are desktop-only, so the footer is the mobile route to Recipes. */}
+        <div className="flex flex-wrap justify-center gap-x-6 gap-y-3 text-xs font-medium uppercase tracking-widest">
+          <Link href="/recipes" className="hover:text-[#f5f2ed] transition-colors">Recipes</Link>
+          <Link href="/clean-eating" className="hover:text-[#f5f2ed] transition-colors">Clean Eating</Link>
           <Link href="/privacy" className="hover:text-[#f5f2ed] transition-colors">Privacy</Link>
           <Link href="/terms" className="hover:text-[#f5f2ed] transition-colors">Terms</Link>
         </div>

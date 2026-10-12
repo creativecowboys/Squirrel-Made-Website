@@ -22,8 +22,10 @@ const Navbar: React.FC = () => {
   return (
     <nav className="fixed top-8 left-0 right-0 z-50 bg-[#4a5d4e]/90 backdrop-blur-md text-[#f5f2ed] px-4 md:px-6 py-1.5 md:py-2 border-b border-[#f5f2ed]/10">
       <div className="max-w-7xl mx-auto grid grid-cols-[1fr_auto_1fr] items-center">
-        <div className="hidden md:flex gap-8 text-sm font-medium">
+        {/* Six links now that Recipes is here — tighter gap at md so the row still fits on a tablet. */}
+        <div className="hidden md:flex gap-4 lg:gap-8 text-sm font-medium whitespace-nowrap">
           <button onClick={handleShopClick} className="hover:opacity-70 transition-opacity cursor-pointer">Shop</button>
+          <Link href="/recipes" className="hover:opacity-70 transition-opacity">Recipes</Link>
           <Link href="/our-story" className="hover:opacity-70 transition-opacity">Our Story</Link>
           <Link href="/our-promise" className="hover:opacity-70 transition-opacity">Our Promise</Link>
           <Link href="/find-a-retailer" className="hover:opacity-70 transition-opacity">Find a Retailer</Link>

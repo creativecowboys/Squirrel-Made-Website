@@ -5,6 +5,7 @@ import Ticker from '@/components/Ticker';
 import ProductGrid from '@/components/ProductGrid';
 import TrustBar from '@/components/TrustBar';
 import BrandStatement from '@/components/BrandStatement';
+import RecipesTeaser from '@/components/RecipesTeaser';
 import NewsletterSignup from '@/components/NewsletterSignup';
 import Footer from '@/components/Footer';
 import { fetchCollections, CollectionGroup } from '@/lib/shopify';
@@ -40,6 +41,7 @@ export default async function HomePage() {
           <ProductGrid collections={collections} error={error} />
         </div>
         <BrandStatement />
+        <RecipesTeaser />
         <TrustBar />
         <NewsletterSignup />
         <Ticker />
