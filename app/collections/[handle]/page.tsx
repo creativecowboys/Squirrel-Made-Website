@@ -7,8 +7,7 @@ import JsonLd from '@/components/JsonLd';
 import ProductCard from '@/components/ProductCard';
 import { COLLECTION_COLORS, COLLECTION_ICONS, DEFAULT_COLLECTION_COLORS } from '@/components/collection-styles';
 import { fetchCollectionByHandle, STOREFRONT_COLLECTION_HANDLES } from '@/lib/shopify';
-import { SITE_URL, absoluteUrl } from '@/lib/site';
-import { buildCollectionSeo, type InlinePart } from '@/lib/catalog-seo';
+import { SITE_URL, SITE_NAME, absoluteUrl } from '@/lib/site';
 
 // Must be a literal (Next requirement) — keep in sync with CATALOG_REVALIDATE_SECONDS in lib/shopify.ts.
 export const revalidate = 3600;
@@ -21,46 +20,26 @@ export function generateStaticParams(): Params[] {
   return STOREFRONT_COLLECTION_HANDLES.map((handle) => ({ handle }));
 }
 
-function RichLine({ parts, linkClassName }: { parts: InlinePart[]; linkClassName: string }) {
-  return (
-    <>
-      {parts.map((part, index) =>
-        part.href ? (
-          <Link key={index} href={part.href} className={linkClassName}>
-            {part.text}
-          </Link>
-        ) : (
-          <span key={index}>{part.text}</span>
-        ),
-      )}
-    </>
-  );
+function describe(title: string, count: number): string {
+  // Collections have no description in Shopify; this is the minimum factual line
+  // (product count + the "small-batch" / "Marietta, Georgia" facts from the site copy).
+  return `Shop ${SITE_NAME} ${title}: ${count} small-batch products, bottled and infused in Marietta, Georgia.`;
 }
 
 export async function generateMetadata({ params }: { params: Promise<Params> }): Promise<Metadata> {
   const { handle } = await params;
   const collection = await fetchCollectionByHandle(handle);
-  if (!collection) return { title: 'Page Not Found', robots: { index: false, follow: false } };
+  if (!collection) return { title: 'Page Not Found' };
 
-  const seo = buildCollectionSeo(collection.handle, collection.products);
-  const description = collection.description || seo?.description || collection.title;
-  const title = seo?.title ?? `${collection.title} | Squirrel Made Products`;
+  const description = collection.description || describe(collection.title, collection.products.length);
   const image = collection.products[0]?.featuredImage?.url;
   const path = `/collections/${collection.handle}`;
 
   return {
-    title: { absolute: title },
+    title: collection.title,
     description,
-    robots: { index: true, follow: true },
     alternates: { canonical: path },
-    openGraph: {
-      type: 'website',
-      title,
-      description,
-      url: path,
-      images: image ? [{ url: image, alt: collection.products[0]?.title }] : undefined,
-    },
-    twitter: { card: 'summary_large_image', title, description, images: image ? [image] : undefined },
+    openGraph: { type: 'website', title: collection.title, description, url: path, images: image ? [{ url: image }] : undefined },
   };
 }
 
@@ -72,16 +51,12 @@ export default async function CollectionPage({ params }: { params: Promise<Param
 
   const colors = COLLECTION_COLORS[collection.handle] ?? DEFAULT_COLLECTION_COLORS;
   const collectionUrl = absoluteUrl(`/collections/${collection.handle}`);
-  const seo = buildCollectionSeo(collection.handle, collection.products);
-  const heading = seo?.h1 ?? collection.title;
-  const description = collection.description || seo?.description || '';
 
   const collectionJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'CollectionPage',
     '@id': `${collectionUrl}#collection`,
-    name: heading,
-    ...(description ? { description } : {}),
+    name: collection.title,
     url: collectionUrl,
     isPartOf: { '@id': `${SITE_URL}/#website` },
     mainEntity: {
@@ -121,12 +96,10 @@ export default async function CollectionPage({ params }: { params: Promise<Param
         />
         <div className="relative z-10 max-w-3xl mx-auto text-center text-[#f5f2ed] space-y-4">
           <span className="text-xs uppercase tracking-[0.3em] font-medium text-[#8aad6e]">Full Collection</span>
-          <h1 className="text-5xl md:text-7xl font-serif italic">{heading}</h1>
-          {seo?.lede ? (
-            <p className="text-[#f5f2ed]/70 text-lg font-light max-w-2xl mx-auto leading-relaxed">
-              {seo.lede}
-            </p>
-          ) : null}
+          <h1 className="text-5xl md:text-7xl font-serif italic">{collection.title}</h1>
+          <p className="text-[#f5f2ed]/70 text-lg font-light max-w-xl mx-auto leading-relaxed">
+            Every product is crafted with clean, natural ingredients — no fillers, no nonsense.
+          </p>
           <div className="w-12 h-0.5 bg-[#8aad6e] mx-auto mt-6" />
         </div>
       </section>
@@ -140,15 +113,6 @@ export default async function CollectionPage({ params }: { params: Promise<Param
               <span className="text-[#2c3a2e]/30">/</span>
               <span className="text-[#2c3a2e]">{collection.title}</span>
             </nav>
-
-            {seo && seo.intro.length > 0 ? (
-              <p className="text-lg text-[#2c3a2e]/80 leading-relaxed font-light max-w-3xl">
-                <RichLine
-                  parts={seo.intro}
-                  linkClassName="text-[#4a7432] underline underline-offset-4 decoration-[#8aad6e]/60 hover:opacity-70"
-                />
-              </p>
-            ) : null}
 
             <div className="space-y-6">
               <div className="flex items-center gap-3">

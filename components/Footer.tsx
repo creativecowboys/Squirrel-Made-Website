@@ -1,6 +1,5 @@
 import React from 'react';
 import Link from 'next/link';
-import ShopCategoryLinks from './ShopCategoryLinks';
 
 const Footer: React.FC = () => {
   return (
@@ -34,11 +33,6 @@ const Footer: React.FC = () => {
           <Link href="/terms" className="hover:text-[#f5f2ed] transition-colors">Terms</Link>
         </div>
       </div>
-
-      <ShopCategoryLinks
-        navClassName="max-w-7xl mx-auto mt-10 flex flex-wrap justify-center gap-x-8 gap-y-3 text-xs font-medium uppercase tracking-widest"
-        linkClassName="hover:text-[#f5f2ed] transition-colors"
-      />
 
       <div className="max-w-7xl mx-auto mt-12 pt-12 border-t border-[#f5f2ed]/5 text-center space-y-3">
         <p className="font-serif italic text-2xl text-[#f5f2ed]/40">

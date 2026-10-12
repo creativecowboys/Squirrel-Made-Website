@@ -15,16 +15,7 @@ import {
   storefrontCollectionOf,
   getPurchaseInfo,
 } from '@/lib/shopify';
-import { SITE_URL, absoluteUrl } from '@/lib/site';
-import {
-  productSeoTitle,
-  productSeoDescription,
-  buildProductJsonLd,
-  collectionAnchor,
-  COLLECTION_NAV,
-} from '@/lib/catalog-seo';
-import ShopCategoryLinks from '@/components/ShopCategoryLinks';
-import { productImageAlt } from '@/lib/product-alt';
+import { SITE_URL, SITE_NAME, absoluteUrl } from '@/lib/site';
 
 // Must be a literal (Next requirement) — keep in sync with CATALOG_REVALIDATE_SECONDS in lib/shopify.ts.
 export const revalidate = 3600;
@@ -38,31 +29,33 @@ export async function generateStaticParams(): Promise<Params[]> {
   return products.map((p) => ({ handle: p.handle }));
 }
 
+function truncate(text: string, max = 155): string {
+  const clean = text.replace(/\s+/g, ' ').trim();
+  if (clean.length <= max) return clean;
+  return `${clean.slice(0, max - 1).replace(/\s+\S*$/, '')}…`;
+}
+
 export async function generateMetadata({ params }: { params: Promise<Params> }): Promise<Metadata> {
   const { handle } = await params;
   const product = await fetchProductByHandle(handle);
-  if (!product) return { title: 'Page Not Found', robots: { index: false, follow: false } };
+  if (!product) return { title: 'Page Not Found' };
 
-  const collectionRef = storefrontCollectionOf(product);
-  const title = productSeoTitle(product.handle, product.title);
-  const description = productSeoDescription(product.description, product.title);
+  const description = truncate(product.description || `${product.title} from ${SITE_NAME}.`);
   const image = product.featuredImage?.url ?? product.images.edges[0]?.node.url;
-  const imageAlt = productImageAlt(product.title, product.featuredImage?.altText, collectionRef?.handle);
   const path = `/products/${product.handle}`;
 
   return {
-    title: { absolute: title },
+    title: product.title,
     description,
-    robots: { index: true, follow: true },
     alternates: { canonical: path },
     openGraph: {
       type: 'website',
-      title,
+      title: product.title,
       description,
       url: path,
-      images: image ? [{ url: image, alt: imageAlt }] : undefined,
+      images: image ? [{ url: image, alt: product.featuredImage?.altText ?? product.title }] : undefined,
     },
-    twitter: { card: 'summary_large_image', title, description, images: image ? [image] : undefined },
+    twitter: { card: 'summary_large_image', title: product.title, description, images: image ? [image] : undefined },
   };
 }
 
@@ -77,27 +70,31 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
 
   const { variant, regularPrice, available } = getPurchaseInfo(product);
   const imageUrl = product.featuredImage?.url ?? product.images.edges[0]?.node.url;
-  const imageAlt = productImageAlt(product.title, product.featuredImage?.altText, collectionRef?.handle);
+  const imageAlt = product.featuredImage?.altText ?? product.title;
   const productUrl = absoluteUrl(`/products/${product.handle}`);
   const related = collection ? collection.products.filter((p) => p.id !== product.id) : [];
-  const anchor = collectionAnchor(collectionRef?.handle);
-  const otherCategories = COLLECTION_NAV.filter((item) => item.handle !== collectionRef?.handle);
 
-  const productJsonLd = buildProductJsonLd({
-    title: product.title,
+  const productJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    '@id': `${productUrl}#product`,
+    name: product.title,
     description: product.description,
+    image: product.images.edges.map((e) => e.node.url),
     url: productUrl,
-    images: product.images.edges.map((edge) => edge.node.url),
-    category: collectionRef?.title,
-    offer: variant
-      ? {
-          priceAmount: variant.price.amount,
-          priceCurrency: variant.price.currencyCode,
-          available: variant.availableForSale,
-          sku: variant.sku,
-        }
-      : null,
-  });
+    ...(variant?.sku ? { sku: variant.sku } : {}),
+    brand: { '@type': 'Brand', name: SITE_NAME },
+    ...(collectionRef ? { category: collectionRef.title } : {}),
+    offers: {
+      '@type': 'Offer',
+      url: productUrl,
+      price: regularPrice.toFixed(2),
+      priceCurrency: variant?.price.currencyCode ?? 'USD',
+      availability: available ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
+      itemCondition: 'https://schema.org/NewCondition',
+      seller: { '@id': `${SITE_URL}/#organization` },
+    },
+  };
 
   const breadcrumbJsonLd = {
     '@context': 'https://schema.org',
@@ -173,36 +170,6 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
               )}
 
               <ProductPurchase product={product} />
-
-              {collectionRef && anchor ? (
-                <p className="text-sm text-[#2c3a2e]/70 font-light leading-relaxed">
-                  Part of our{' '}
-                  <Link href={`/collections/${collectionRef.handle}`} className="text-[#4a7432] hover:underline">
-                    {anchor}
-                  </Link>
-                  .
-                  {otherCategories.length > 0 ? (
-                    <>
-                      {' '}Also browse{' '}
-                      {otherCategories.map((item, index) => (
-                        <span key={item.handle}>
-                          {index > 0 && index === otherCategories.length - 1 ? ' and ' : null}
-                          {index > 0 && index < otherCategories.length - 1 ? ', ' : null}
-                          <Link href={item.href} className="text-[#4a7432] hover:underline">
-                            {item.anchor}
-                          </Link>
-                        </span>
-                      ))}
-                      .
-                    </>
-                  ) : null}
-                </p>
-              ) : (
-                <ShopCategoryLinks
-                  navClassName="flex flex-wrap gap-x-4 gap-y-2 text-sm"
-                  linkClassName="text-[#4a7432] hover:underline"
-                />
-              )}
 
               <ul className="space-y-3">
                 {[
