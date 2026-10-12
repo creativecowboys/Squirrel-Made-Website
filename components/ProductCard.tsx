@@ -6,7 +6,6 @@ import { ShopifyProduct, getPurchaseInfo } from '@/lib/shopify';
 import { trackAddToCart } from '@/lib/tracking';
 import { useCart } from '@/lib/cart-context';
 import { COLLECTION_COLORS, DEFAULT_COLLECTION_COLORS } from './collection-styles';
-import { productImageAlt } from '@/lib/product-alt';
 
 interface ProductCardProps {
   product: ShopifyProduct;
@@ -22,7 +21,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, collectionHandle }) 
   const colors = COLLECTION_COLORS[collectionHandle] ?? DEFAULT_COLLECTION_COLORS;
 
   const imageUrl = product.featuredImage?.url ?? product.images.edges[0]?.node.url;
-  const imageAlt = productImageAlt(product.title, product.featuredImage?.altText, collectionHandle);
+  const imageAlt = product.featuredImage?.altText ?? product.title;
   const { variant, regularPrice, available, sellingPlanId, hasSubscription, subDiscount, subscriptionPrice } = getPurchaseInfo(product);
   const productUrl = `/products/${product.handle}`;
 
