@@ -16,6 +16,9 @@ const nextConfig: NextConfig = {
   eslint: { ignoreDuringBuilds: true },
   async redirects() {
     return [
+      // Legacy category URLs reported as 404s in Search Console.
+      { source: '/olive-oils', destination: '/collections/olive-oils', statusCode: 301 },
+      { source: '/balsamic-vinegars', destination: '/collections/balsamic', statusCode: 301 },
       // Old Square Online URL that still gets Search Console impressions.
       { source: '/contact-us', destination: '/contact', statusCode: 301 },
       // Other Square-era paths (Square's default shop/about/legal slugs). Best-effort
