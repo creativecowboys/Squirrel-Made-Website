@@ -5,7 +5,9 @@ import Link from 'next/link';
 import { ShopifyProduct, getPurchaseInfo } from '@/lib/shopify';
 import { trackAddToCart } from '@/lib/tracking';
 import { useCart } from '@/lib/cart-context';
+import { isBottleCollection } from '@/lib/small-bottles';
 import { COLLECTION_COLORS, DEFAULT_COLLECTION_COLORS } from './collection-styles';
+import SmallBottleNote from './SmallBottleNote';
 
 interface ProductCardProps {
   product: ShopifyProduct;
@@ -159,6 +161,9 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, collectionHandle }) 
             )}
           </button>
         </div>
+
+        {/* Price and size of the small bottle. Information only — it is not orderable yet. */}
+        {isBottleCollection(collectionHandle) && <SmallBottleNote placement="card" />}
       </div>
     </div>
   );

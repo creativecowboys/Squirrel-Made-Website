@@ -6,8 +6,10 @@ import Footer from '@/components/Footer';
 import JsonLd from '@/components/JsonLd';
 import ProductCard from '@/components/ProductCard';
 import ProductPurchase from '@/components/ProductPurchase';
+import SmallBottleNote from '@/components/SmallBottleNote';
 import ViewContentTracker from '@/components/ViewContentTracker';
 import { COLLECTION_COLORS, DEFAULT_COLLECTION_COLORS } from '@/components/collection-styles';
+import { isBottleCollection } from '@/lib/small-bottles';
 import {
   fetchProductByHandle,
   fetchProductHandles,
@@ -169,7 +171,12 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
                 <p className="text-lg text-[#2c3a2e]/80 leading-relaxed font-light">{product.description}</p>
               )}
 
-              <ProductPurchase product={product} />
+              <div className="space-y-3">
+                <ProductPurchase product={product} />
+                {/* Price and size of the small bottle. Information only — it is not orderable
+                    yet, so it is deliberately kept out of the Product JSON-LD offer above. */}
+                {isBottleCollection(collectionRef?.handle) && <SmallBottleNote placement="detail" />}
+              </div>
 
               <ul className="space-y-3">
                 {[
