@@ -2,12 +2,13 @@
 
 import React, { useState, useCallback } from 'react';
 import Link from 'next/link';
-import { ShopifyProduct, getPurchaseInfo } from '@/lib/shopify';
+import { ShopifyProduct, getPurchaseInfo, getSizeVariants } from '@/lib/shopify';
 import { trackAddToCart } from '@/lib/tracking';
 import { useCart } from '@/lib/cart-context';
 import { isBottleCollection } from '@/lib/small-bottles';
 import { COLLECTION_COLORS, DEFAULT_COLLECTION_COLORS } from './collection-styles';
 import SmallBottleNote from './SmallBottleNote';
+import SizeSelector from './SizeSelector';
 
 interface ProductCardProps {
   product: ShopifyProduct;
@@ -24,7 +25,14 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, collectionHandle }) 
 
   const imageUrl = product.featuredImage?.url ?? product.images.edges[0]?.node.url;
   const imageAlt = product.featuredImage?.altText ?? product.title;
-  const { variant, regularPrice, available, sellingPlanId, hasSubscription, subDiscount, subscriptionPrice } = getPurchaseInfo(product);
+
+  // null until Shopify actually gives this product a size axis — see getSizeVariants.
+  const sizeVariants = getSizeVariants(product);
+  const defaultVariantId =
+    sizeVariants?.find((v) => v.availableForSale)?.id ?? sizeVariants?.[0]?.id;
+  const [selectedVariantId, setSelectedVariantId] = useState<string | undefined>(defaultVariantId);
+
+  const { variant, regularPrice, available, sellingPlanId, hasSubscription, subDiscount, subscriptionPrice } = getPurchaseInfo(product, selectedVariantId);
   const productUrl = `/products/${product.handle}`;
 
   const handleAdd = useCallback(async () => {
@@ -83,6 +91,20 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, collectionHandle }) 
         <h3 className="text-lg font-serif italic text-[#2c3a2e] leading-tight flex-1">
           <Link href={productUrl}>{product.title}</Link>
         </h3>
+
+        {/* Size picker — only once Shopify gives this product more than one size.
+            Picking a size resets to One-Time: Subscribe & Save belongs to the large
+            bottle only, so a remembered Subscribe choice must not follow a shopper
+            onto another size. */}
+        {sizeVariants && selectedVariantId && (
+          <SizeSelector
+            product={product}
+            variants={sizeVariants}
+            selectedId={selectedVariantId}
+            onSelect={(id) => { setSelectedVariantId(id); setPurchaseType('one-time'); }}
+            size="card"
+          />
+        )}
 
         {/* Purchase option selector */}
         {hasSubscription && available && (
@@ -162,8 +184,10 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, collectionHandle }) 
           </button>
         </div>
 
-        {/* Price and size of the small bottle. Information only — it is not orderable yet. */}
-        {isBottleCollection(collectionHandle) && <SmallBottleNote placement="card" />}
+        {/* Fallback note for the small bottle, shown ONLY while Shopify has no Small
+            variant for this product. Once it does, the size picker above is the real
+            thing and this informational note would be wrong, so it disappears. */}
+        {!sizeVariants && isBottleCollection(collectionHandle) && <SmallBottleNote placement="card" />}
       </div>
     </div>
   );

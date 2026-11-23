@@ -4,9 +4,10 @@
 // Same logic and copy as the homepage ProductCard, laid out for a detail page.
 
 import React, { useState, useCallback } from 'react';
-import { ShopifyProduct, getPurchaseInfo } from '@/lib/shopify';
+import { ShopifyProduct, getPurchaseInfo, getSizeVariants, getSizeLabel } from '@/lib/shopify';
 import { trackAddToCart } from '@/lib/tracking';
 import { useCart } from '@/lib/cart-context';
+import SizeSelector from './SizeSelector';
 
 const ProductPurchase: React.FC<{ product: ShopifyProduct }> = ({ product }) => {
   const { addItem } = useCart();
@@ -14,7 +15,13 @@ const ProductPurchase: React.FC<{ product: ShopifyProduct }> = ({ product }) => 
   const [loading, setLoading] = useState(false);
   const [purchaseType, setPurchaseType] = useState<'one-time' | 'subscription'>('one-time');
 
-  const { variant, regularPrice, available, sellingPlanId, hasSubscription, subDiscount, subscriptionPrice } = getPurchaseInfo(product);
+  // null until Shopify actually gives this product a size axis — see getSizeVariants.
+  const sizeVariants = getSizeVariants(product);
+  const defaultVariantId =
+    sizeVariants?.find((v) => v.availableForSale)?.id ?? sizeVariants?.[0]?.id;
+  const [selectedVariantId, setSelectedVariantId] = useState<string | undefined>(defaultVariantId);
+
+  const { variant, regularPrice, available, sellingPlanId, hasSubscription, subDiscount, subscriptionPrice } = getPurchaseInfo(product, selectedVariantId);
 
   const handleAdd = useCallback(async () => {
     if (!variant || loading) return;
@@ -41,6 +48,27 @@ const ProductPurchase: React.FC<{ product: ShopifyProduct }> = ({ product }) => 
 
   return (
     <div className="bg-white rounded-2xl border border-[#2c3a2e]/8 shadow-sm p-6 space-y-5">
+      {/* Size picker — only once Shopify gives this product more than one size.
+          Picking a size resets to One-Time: Subscribe & Save belongs to the large
+          bottle only, so a remembered Subscribe choice must not follow a shopper
+          onto another size. */}
+      {sizeVariants && selectedVariantId && (
+        <div className="space-y-1.5">
+          <SizeSelector
+            product={product}
+            variants={sizeVariants}
+            selectedId={selectedVariantId}
+            onSelect={(id) => { setSelectedVariantId(id); setPurchaseType('one-time'); }}
+            size="detail"
+          />
+          {variant && (
+            <p className="text-[11px] text-[#2c3a2e]/55">
+              {getSizeLabel(product, variant)} &middot; ${regularPrice.toFixed(2)}
+            </p>
+          )}
+        </div>
+      )}
+
       {/* Purchase option selector */}
       {hasSubscription && available && (
         <div className="flex flex-col gap-2">

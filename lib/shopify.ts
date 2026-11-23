@@ -37,6 +37,13 @@ export interface ShopifyVariant {
     currencyCode: string;
   };
   availableForSale: boolean;
+  /** Absent on products fetched before size options existed; Shopify sends [{name:'Title',value:'Default Title'}] for optionless products. */
+  selectedOptions?: { name: string; value: string }[];
+}
+
+export interface ShopifyProductOption {
+  name: string;
+  values: string[];
 }
 
 export interface ShopifyProduct {
@@ -47,6 +54,7 @@ export interface ShopifyProduct {
   description: string;
   featuredImage: ShopifyImage | null;
   images: { edges: { node: ShopifyImage }[] };
+  options?: ShopifyProductOption[];
   variants: { edges: { node: ShopifyVariant }[] };
   sellingPlanGroups?: {
     edges: {
@@ -159,7 +167,8 @@ const PRODUCT_FIELDS = `
   description
   featuredImage { url altText width height }
   images(first: 5) { edges { node { url altText width height } } }
-  variants(first: 1) {
+  options { name values }
+  variants(first: 25) {
     edges {
       node {
         id
@@ -167,6 +176,7 @@ const PRODUCT_FIELDS = `
         sku
         price { amount currencyCode }
         availableForSale
+        selectedOptions { name value }
       }
     }
   }
@@ -527,15 +537,119 @@ export function getCartSubtotal(cart: ShopifyCart): number {
   return parseFloat(cart.cost.subtotalAmount.amount);
 }
 
+// ─── Size variants ────────────────────────────────────────────────────────────
+//
+// Shopify gives an optionless product one synthetic variant: option "Title" with
+// the single value "Default Title". Every Squirrel Made product looks like that
+// today, so everything below is inert until a real option (e.g. "Size" with
+// "Large" / "Small") is added in the Shopify admin. The moment it is, the size
+// picker appears on the cards and the product pages with no code change.
+
+/** Option names we treat as a size axis, lowercased. */
+const SIZE_OPTION_NAMES = ['size', 'bottle size', 'volume'];
+
+/** The synthetic option Shopify invents for products with no real options. */
+const SYNTHETIC_OPTION_NAME = 'title';
+
+export function getVariants(product: ShopifyProduct): ShopifyVariant[] {
+  return product.variants.edges.map((e) => e.node);
+}
+
+/**
+ * The product's size option, or null when it has none (every product today).
+ * Only a real, multi-value option counts — never Shopify's synthetic "Title".
+ */
+export function getSizeOption(product: ShopifyProduct): ShopifyProductOption | null {
+  const options = product.options ?? [];
+  const named = options.find(
+    (o) => SIZE_OPTION_NAMES.includes(o.name.trim().toLowerCase()) && o.values.length > 1
+  );
+  if (named) return named;
+
+  // Fall back to the sole real option when it has more than one value, so a
+  // differently-named size axis still renders instead of being silently dropped.
+  const real = options.filter(
+    (o) => o.name.trim().toLowerCase() !== SYNTHETIC_OPTION_NAME && o.values.length > 1
+  );
+  return real.length === 1 ? real[0] : null;
+}
+
+/**
+ * Variants ordered the way the size option is ordered in Shopify, or null when
+ * the product has no size axis. Returning null is the signal to render exactly
+ * what the site rendered before size variants existed.
+ */
+export function getSizeVariants(product: ShopifyProduct): ShopifyVariant[] | null {
+  const option = getSizeOption(product);
+  if (!option) return null;
+
+  const variants = getVariants(product);
+  if (variants.length < 2) return null;
+
+  const valueOf = (v: ShopifyVariant) =>
+    v.selectedOptions?.find((o) => o.name === option.name)?.value ?? v.title;
+
+  const ordered = option.values
+    .map((value) => variants.find((v) => valueOf(v) === value))
+    .filter((v): v is ShopifyVariant => !!v);
+
+  // Any mismatch between the option's values and the variants means we don't
+  // understand this product's shape — fall back rather than guess.
+  return ordered.length === variants.length ? ordered : null;
+}
+
+/** The size label to show on a pill, e.g. "Small". Falls back to the variant title. */
+export function getSizeLabel(product: ShopifyProduct, variant: ShopifyVariant): string {
+  const option = getSizeOption(product);
+  if (!option) return variant.title;
+  return variant.selectedOptions?.find((o) => o.name === option.name)?.value ?? variant.title;
+}
+
+/** Lowest price across a product's purchasable sizes — for "from $X" copy. */
+export function getLowestPrice(product: ShopifyProduct): number {
+  const prices = getVariants(product).map((v) => parseFloat(v.price.amount));
+  return prices.length ? Math.min(...prices) : 0;
+}
+
+/**
+ * Whether Subscribe & Save may be offered for this particular variant.
+ *
+ * Subscribe & Save was set up for the original (large) bottle and nothing else.
+ * Shopify's selling plan group hangs off the *product*, not the variant, so a
+ * naive read would happily hand a newly added size the large bottle's selling
+ * plan id and enrol a shopper in a subscription nobody priced. That is the one
+ * thing this must never do (Dave, Nov 23 2026: small bottles are one-time only,
+ * no new subscription enrolment or discount program).
+ *
+ * So: a product with no size axis behaves exactly as it always has, and a
+ * product with sizes offers the subscription on the FIRST size only — the
+ * original large bottle, which is the size the plan was actually created for.
+ * Any other size is one-time purchase only.
+ */
+export function isSubscribableVariant(
+  product: ShopifyProduct,
+  variant: ShopifyVariant | undefined
+): boolean {
+  if (!variant) return false;
+  const sizes = getSizeVariants(product);
+  if (!sizes) return true; // single-size product — unchanged behaviour
+  return sizes[0]?.id === variant.id;
+}
+
 /** Price / subscription facts a card or product page needs, derived once. */
-export function getPurchaseInfo(product: ShopifyProduct) {
-  const variant = product.variants.edges[0]?.node;
+export function getPurchaseInfo(product: ShopifyProduct, selectedVariantId?: string) {
+  const variants = getVariants(product);
+  const variant =
+    (selectedVariantId ? variants.find((v) => v.id === selectedVariantId) : undefined) ?? variants[0];
   const regularPrice = variant ? parseFloat(variant.price.amount) : 0;
   const available = variant?.availableForSale ?? false;
 
   const sellingPlanGroup = product.sellingPlanGroups?.edges[0]?.node;
   const sellingPlan = sellingPlanGroup?.sellingPlans.edges[0]?.node;
-  const sellingPlanId = sellingPlan?.id;
+  // Withheld entirely for any size the plan was not created for, so no caller can
+  // pass it to the cart even by accident.
+  const subscribable = isSubscribableVariant(product, variant);
+  const sellingPlanId = subscribable ? sellingPlan?.id : undefined;
   const discountPercentage = sellingPlan?.priceAdjustments?.[0]?.adjustmentValue?.adjustmentPercentage ?? 0;
   const hasSubscription = !!sellingPlanId;
   const subDiscount = discountPercentage > 0 ? discountPercentage : (hasSubscription ? 15 : 0);

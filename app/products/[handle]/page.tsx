@@ -16,6 +16,8 @@ import {
   fetchCollectionByHandle,
   storefrontCollectionOf,
   getPurchaseInfo,
+  getSizeVariants,
+  getSizeLabel,
 } from '@/lib/shopify';
 import { SITE_URL, SITE_NAME, absoluteUrl } from '@/lib/site';
 
@@ -71,6 +73,8 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
   const colors = (collectionRef && COLLECTION_COLORS[collectionRef.handle]) ?? DEFAULT_COLLECTION_COLORS;
 
   const { variant, regularPrice, available } = getPurchaseInfo(product);
+  // null until Shopify actually gives this product a size axis — see getSizeVariants.
+  const sizeVariants = getSizeVariants(product);
   const imageUrl = product.featuredImage?.url ?? product.images.edges[0]?.node.url;
   const imageAlt = product.featuredImage?.altText ?? product.title;
   const productUrl = absoluteUrl(`/products/${product.handle}`);
@@ -87,15 +91,30 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
     ...(variant?.sku ? { sku: variant.sku } : {}),
     brand: { '@type': 'Brand', name: SITE_NAME },
     ...(collectionRef ? { category: collectionRef.title } : {}),
-    offers: {
-      '@type': 'Offer',
-      url: productUrl,
-      price: regularPrice.toFixed(2),
-      priceCurrency: variant?.price.currencyCode ?? 'USD',
-      availability: available ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
-      itemCondition: 'https://schema.org/NewCondition',
-      seller: { '@id': `${SITE_URL}/#organization` },
-    },
+    // One Offer per purchasable size, so each bottle carries its own real price.
+    // Identical single Offer for a product with one size, which is every product
+    // until the Small variants exist in Shopify.
+    offers: sizeVariants
+      ? sizeVariants.map((v) => ({
+          '@type': 'Offer',
+          url: productUrl,
+          name: `${product.title} — ${getSizeLabel(product, v)}`,
+          price: parseFloat(v.price.amount).toFixed(2),
+          priceCurrency: v.price.currencyCode,
+          availability: v.availableForSale ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
+          itemCondition: 'https://schema.org/NewCondition',
+          ...(v.sku ? { sku: v.sku } : {}),
+          seller: { '@id': `${SITE_URL}/#organization` },
+        }))
+      : {
+          '@type': 'Offer',
+          url: productUrl,
+          price: regularPrice.toFixed(2),
+          priceCurrency: variant?.price.currencyCode ?? 'USD',
+          availability: available ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
+          itemCondition: 'https://schema.org/NewCondition',
+          seller: { '@id': `${SITE_URL}/#organization` },
+        },
   };
 
   const breadcrumbJsonLd = {
@@ -173,9 +192,13 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
 
               <div className="space-y-3">
                 <ProductPurchase product={product} />
-                {/* Price and size of the small bottle. Information only — it is not orderable
-                    yet, so it is deliberately kept out of the Product JSON-LD offer above. */}
-                {isBottleCollection(collectionRef?.handle) && <SmallBottleNote placement="detail" />}
+                {/* Fallback note for the small bottle, shown ONLY while Shopify has no
+                    Small variant for this product. Once it does, the size picker in the
+                    purchase box above is the real thing — and the small bottle is then a
+                    genuine Offer in the JSON-LD rather than being left out of it. */}
+                {!sizeVariants && isBottleCollection(collectionRef?.handle) && (
+                  <SmallBottleNote placement="detail" />
+                )}
               </div>
 
               <ul className="space-y-3">

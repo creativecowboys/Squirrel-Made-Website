@@ -12,6 +12,25 @@ import {
 import { trackInitiateCheckout } from '@/lib/tracking';
 import { useCart } from '@/lib/cart-context';
 
+/**
+ * The size (variant) name to show on a cart line, or null when there is nothing
+ * useful to say. Shopify names the single synthetic variant of an optionless
+ * product "Default Title", which is not a size and must never be shown. Once a
+ * product has real sizes, the line has to name which one — otherwise a Large and
+ * a Small of the same flavour are two rows that look identical apart from price.
+ */
+function sizeNameOf(line: CartLine): string | null {
+  const title = line.merchandise.title?.trim();
+  if (!title || title.toLowerCase() === 'default title') return null;
+  return title;
+}
+
+/** Product title plus size, for labels that must distinguish two sizes of one flavour. */
+function lineLabel(line: CartLine): string {
+  const size = sizeNameOf(line);
+  return size ? `${line.merchandise.product.title} (${size})` : line.merchandise.product.title;
+}
+
 const CartDrawer: React.FC = () => {
   const { cart, isCartOpen: isOpen, closeCart: onClose, setCart: onCartChange } = useCart();
   const [isCheckingOut, setIsCheckingOut] = useState(false);
@@ -211,6 +230,11 @@ const CartDrawer: React.FC = () => {
                       <p className="text-sm font-semibold text-[#2c3a2e] leading-tight truncate">
                         {line.merchandise.product.title}
                       </p>
+                      {sizeNameOf(line) && (
+                        <p className="text-[11px] uppercase tracking-wider font-semibold text-[#2c3a2e]/55 mt-0.5">
+                          {sizeNameOf(line)}
+                        </p>
+                      )}
                       <p className="text-sm text-[#2c3a2e]/60 mt-0.5">
                         {formatPrice(line.merchandise.price.amount)}
                       </p>
@@ -228,7 +252,7 @@ const CartDrawer: React.FC = () => {
                         <button
                           onClick={() => handleQuantity(line, line.quantity - 1)}
                           disabled={isUpdating}
-                          aria-label={`Decrease quantity of ${line.merchandise.product.title}`}
+                          aria-label={`Decrease quantity of ${lineLabel(line)}`}
                           className="w-7 h-7 rounded-full bg-[#f5f2ed] border border-[#2c3a2e]/15 flex items-center justify-center hover:bg-[#2c3a2e] hover:text-[#f5f2ed] hover:border-[#2c3a2e] transition-colors text-[#2c3a2e] font-bold text-sm disabled:opacity-50"
                         >
                           −
@@ -239,7 +263,7 @@ const CartDrawer: React.FC = () => {
                         <button
                           onClick={() => handleQuantity(line, line.quantity + 1)}
                           disabled={isUpdating}
-                          aria-label={`Increase quantity of ${line.merchandise.product.title}`}
+                          aria-label={`Increase quantity of ${lineLabel(line)}`}
                           className="w-7 h-7 rounded-full bg-[#f5f2ed] border border-[#2c3a2e]/15 flex items-center justify-center hover:bg-[#2c3a2e] hover:text-[#f5f2ed] hover:border-[#2c3a2e] transition-colors text-[#2c3a2e] font-bold text-sm disabled:opacity-50"
                         >
                           +
@@ -255,7 +279,7 @@ const CartDrawer: React.FC = () => {
                       <button
                         onClick={() => handleRemove(line)}
                         disabled={isUpdating}
-                        aria-label={`Remove ${line.merchandise.product.title}`}
+                        aria-label={`Remove ${lineLabel(line)}`}
                         className="text-[#2c3a2e]/30 hover:text-red-500 transition-colors disabled:opacity-50"
                       >
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="w-4 h-4">

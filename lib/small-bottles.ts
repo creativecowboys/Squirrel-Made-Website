@@ -1,15 +1,17 @@
-// Small-bottle information — INFORMATIONAL ONLY.
+// Small-bottle information — the FALLBACK shown before a product has a Small variant.
 //
-// Every flavour is also made in a small bottle, and shoppers were asking, so the
-// price and size are stated on the bottle products. Online ordering for the small
-// bottle is NOT open: no Small variant exists in Shopify, nothing here creates one,
-// and nothing here adds anything to the cart or to checkout. The large bottle is
-// still the only thing that can be bought, exactly as before.
+// Every flavour is also made in a small bottle, and shoppers were asking, so the price
+// and size are stated on the bottle products. This note is now only a stand-in: the
+// moment a product gets a real Size option in Shopify, getSizeVariants() in lib/shopify
+// returns its sizes, the site renders a working size picker and add-to-cart instead, and
+// this note disappears for that product. Nothing here creates a variant or touches the
+// cart — it is text.
 //
-// Why ordering is held: the filled shipping weight of a small bottle is unknown, and
-// the store's US market runs a USPS Ground Advantage carrier-calculated rate alongside
-// the $6.85 / free-over-$60 flat option. A blank or guessed weight would mis-price real
-// shipping, so the small bottle stays unbuyable until the weight is known.
+// History: ordering was held Nov 13–23 2026 because the small bottle's filled shipping
+// weight was unknown, and the store's US market runs a USPS Ground Advantage
+// carrier-calculated rate alongside the $6.85 / free-over-$60 flat option, so a blank or
+// guessed weight would mis-price real shipping. Dave released it Nov 23 2026 with the
+// client's own rule: each Small ships at exactly half its own Large's weight.
 //
 // Source of the facts: the client's own words (Squirrel Made, Nov 12 2026) —
 // "Small bottles are $11 each and are approximately 4 ounces in volume. All flavors
