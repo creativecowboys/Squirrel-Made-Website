@@ -65,7 +65,7 @@ export default function PrivacyPage() {
         <div className="space-y-3">
           <h2 className="text-xl font-serif italic">6. Your Rights</h2>
           <p className="text-sm leading-relaxed text-[#2c3a2e]/70 font-light">
-            You have the right to access, correct, or delete the personal information we hold about you. To make a request, please contact us at <a href="mailto:hello@squirrelmade.com" className="underline underline-offset-2 hover:opacity-70 transition-opacity">hello@squirrelmade.com</a>.
+            You have the right to access, correct, or delete the personal information we hold about you. To make a request, please contact us at <a href="mailto:squirrelmadeproducts@gmail.com" className="underline underline-offset-2 hover:opacity-70 transition-opacity">squirrelmadeproducts@gmail.com</a>.
           </p>
         </div>
 
@@ -79,7 +79,7 @@ export default function PrivacyPage() {
         <div className="space-y-3">
           <h2 className="text-xl font-serif italic">8. Contact Us</h2>
           <p className="text-sm leading-relaxed text-[#2c3a2e]/70 font-light">
-            If you have any questions about this Privacy Policy, please reach out to us at <a href="mailto:hello@squirrelmade.com" className="underline underline-offset-2 hover:opacity-70 transition-opacity">hello@squirrelmade.com</a>.
+            If you have any questions about this Privacy Policy, please reach out to us at <a href="mailto:squirrelmadeproducts@gmail.com" className="underline underline-offset-2 hover:opacity-70 transition-opacity">squirrelmadeproducts@gmail.com</a>.
           </p>
         </div>
 
