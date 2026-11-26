@@ -95,6 +95,20 @@ const ContactPage: React.FC = () => {
                             <p className="font-serif italic text-lg mb-2">Marietta Square Farmers Market</p>
                             <p className="text-sm text-[#f5f2ed]/60 leading-relaxed">Stop by and say hello — we love meeting our customers and their dogs 🐾</p>
                         </div>
+
+                        <section className="bg-white border border-[#2c3a2e]/8 rounded-2xl p-6 space-y-3">
+                            <h2 className="text-xl font-serif italic text-[#2c3a2e]">Share Your Experience</h2>
+                            <p className="text-sm text-[#2c3a2e]/60 leading-relaxed">Tell others about your experience with Squirrel Made.</p>
+                            <a
+                                href="https://search.google.com/local/writereview?placeid=ChIJe2TqRk4bnCoRZVtvHN2ZAn0"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center gap-2 text-sm font-semibold text-[#4a7432] underline underline-offset-4 hover:text-[#2c3a2e] transition-colors"
+                            >
+                                Leave a Google review
+                                <span className="sr-only"> (opens in a new tab)</span>
+                            </a>
+                        </section>
                     </aside>
 
                     {/* Contact form */}
