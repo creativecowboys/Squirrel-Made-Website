@@ -58,7 +58,7 @@ export default function TermsPage() {
         <div className="space-y-3">
           <h2 className="text-xl font-serif italic">5. Returns &amp; Refunds</h2>
           <p className="text-sm leading-relaxed text-[#2c3a2e]/70 font-light">
-            If you are not satisfied with your order, please contact us within 14 days of delivery at <a href="mailto:hello@squirrelmade.com" className="underline underline-offset-2 hover:opacity-70 transition-opacity">hello@squirrelmade.com</a>. Because our products are food items, we handle returns on a case-by-case basis. We stand behind our products and will do our best to make it right.
+            If you are not satisfied with your order, please contact us within 14 days of delivery at <a href="mailto:squirrelmadeproducts@gmail.com" className="underline underline-offset-2 hover:opacity-70 transition-opacity">squirrelmadeproducts@gmail.com</a>. Because our products are food items, we handle returns on a case-by-case basis. We stand behind our products and will do our best to make it right.
           </p>
         </div>
 
@@ -86,7 +86,7 @@ export default function TermsPage() {
         <div className="space-y-3">
           <h2 className="text-xl font-serif italic">9. Contact Us</h2>
           <p className="text-sm leading-relaxed text-[#2c3a2e]/70 font-light">
-            Questions about these Terms? Reach us at <a href="mailto:hello@squirrelmade.com" className="underline underline-offset-2 hover:opacity-70 transition-opacity">hello@squirrelmade.com</a>.
+            Questions about these Terms? Reach us at <a href="mailto:squirrelmadeproducts@gmail.com" className="underline underline-offset-2 hover:opacity-70 transition-opacity">squirrelmadeproducts@gmail.com</a>.
           </p>
         </div>
 
